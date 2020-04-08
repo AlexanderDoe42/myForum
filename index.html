@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forum</title>
+<link rel="icon" href="icons/favicon.ico">
+<link rel="stylesheet" type="text/css" href="/font/flaticon.css">
+<link rel="stylesheet" type="text/css" href="/style/main.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+</head>
+<body>
+
+<div class="main-container">
+  <div id="forumhead"></div>
+  <div id="user-info"></div>
+  <div id="subjects"></div>
+  <button onclick="showBox()">New subject</button>
+</div>
+<div id="new-something-body">
+  <div id="new-something-box">
+    <div id="close-button" class="cursor-pointer" onclick="closeBox()">
+      <div></div>
+    </div>
+    <form id="newsomething-form" action="newsubject.php" method="post">
+      <textarea name="title" placeholder="title of the new subject"></textarea>
+      <textarea name="content" placeholder="type description here"></textarea>
+      <input class="cursor-pointer" type="submit" name="send-button" value="Create">
+    </form>
+  </div>
+</div>
+
+<script>
+  $("#forumhead").load("/html/forumhead.html");
+  $("#user-info").load("/html/user-info.html", function(responseTxt, statusTxt, xhr){
+    if(statusTxt == "success") {
+      userCondition();
+    }
+  });
+</script>
+<script src="/js/main.js"></script>
+<script> loadSubjects() </script>
+
+</body>
+</html>

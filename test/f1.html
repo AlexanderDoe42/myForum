@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+function showUser(str) {
+  if (str=="") {
+    document.getElementById("txtHint").innerHTML="";
+    return;
+  }
+  if (window.XMLHttpRequest) {
+    xmlhttp=new XMLHttpRequest();
+  }
+  xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("txtHint").innerHTML=this.responseText;
+    }
+  }
+  xmlhttp.open("GET", "f2.php?q=" + str, true);
+  xmlhttp.send();
+}
+</script>
+</head>
+<body>
+
+<form>
+<select name="users" onchange="showUser(this.value)">
+<option value="">Select a user:</option>
+<option value="1">admin</option>
+<option value="8">fsdfasdf</option>
+<option value="12">fsdfasdfsd</option>
+<option value="13">fsdfasdfsdsdfa</option>
+<option value="14">fsdsdfa</option>
+<option value="15">fsdsdfafasdfa</option>
+<option value="16">fsdsdfaafsfasdfa</option>
+<option value="17">fsafsdfasdfgfdg</option>
+<option value="18">fsafsdfasdfgfdgds</option>
+<option value="19">fsafsdfaf3</option>
+<option value="20">Sjrsj</option>
+<option value="22">adminsfasdf</option>
+<option value="24">adminsfasdfg</option>
+</select>
+</form>
+<br>
+<div id="txtHint"><b>User info will be listed here.</b></div>
+
+</body>
+</html>

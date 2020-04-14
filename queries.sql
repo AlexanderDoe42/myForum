@@ -45,3 +45,8 @@ ALTER TABLE tablename AUTO_INCREMENT = 1; // to reset AUTO_INCREMENT
 UPDATE Users
 SET NumberOfPosts = 42
 WHERE UserID = '$usrID';
+
+UPDATE Posts
+SET PostContent = '[quote="alex"]how can the earth be spherical[/quote]
+but it is!'
+WHERE PostID = ;

@@ -22,16 +22,21 @@ function getCookie(cname) {
 }
 
 function loadPosts() {
-  if (window.XMLHttpRequest) {
-    xmlhttp = new XMLHttpRequest();
-  }
-  xmlhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("posts").innerHTML = this.responseText;
+  var htmlForQuoteAuthor = '<div class="quote_author"><img src="/icons/double_quotation_mark.png">';
+  var len = document.getElementsByClassName("post_content").length;
+  for (i = 0; i < len; i++) {
+    var bg_color = "bg4";
+    while (document.getElementsByClassName("post_content")[i].innerHTML.indexOf('[quote="') != -1) {
+      bg_color = (bg_color == "bg4") ? "bg3" : "bg4";
+      document.getElementsByClassName("post_content")[i].innerHTML =
+      document.getElementsByClassName("post_content")[i].innerHTML.replace('[quote="', '<div class="quote ' + bg_color + '">' + htmlForQuoteAuthor);
     }
+    document.getElementsByClassName("post_content")[i].innerHTML =
+    document.getElementsByClassName("post_content")[i].innerHTML.replace(/"\]/g, '</div> <!-- quote_author -->');
+    document.getElementsByClassName("post_content")[i].innerHTML =
+    document.getElementsByClassName("post_content")[i].innerHTML.replace(/\[\/quote\]/g, '</div>');
   }
-  xmlhttp.open("GET", "getposts.php", true);
-  xmlhttp.send();
+  document.getElementById("posts").style.display = "block";
 }
 
 function loadSubjects() {
@@ -53,8 +58,24 @@ function logout() {
   document.getElementById("login-form").style.display = "block";
 }
 
-function showBox() {
+function showBox(postID) {
   document.getElementById("new-something-body").style.display = "block";
+  if (postID == undefined) {
+    document.getElementById("message").innerHTML = "";
+  } else {
+    var msg = document.getElementById("post_content" + postID).innerHTML;
+    msg = msg.replace(/<div class="quote bg3">/g, '[quote="');
+    msg = msg.replace(/<div class="quote bg4">/g, '[quote="');
+    msg = msg.replace(/<div class="quote_author"><img src="\/icons\/double_quotation_mark.png">/g, '');
+    msg = msg.replace(/<\/div> <!-- quote_author -->/g, '"]');
+    msg = msg.replace(/<\/div>/g, '[/quote]');
+    var quote = '[quote="' +
+                document.getElementById("author_post" + postID).innerHTML +
+                '"]' +
+                msg +
+                "[/quote]";
+    document.getElementById("message").innerHTML = quote;
+  }
 }
 
 function closeBox() {

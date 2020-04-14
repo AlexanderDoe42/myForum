@@ -8,7 +8,7 @@
 $msg = $_POST['message'];
 $usrID = $_COOKIE['usrID'];
 $subjectID = $_GET['id'];
-
+$msg = str_replace("'", "\'", $msg);
 try {
   $conn = new PDO("mysql:host=localhost;dbname=myForum", "alex", "svetly");
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -32,7 +32,12 @@ catch(PDOException $e) {
 }
 $conn = null;
 ?>
-<script> document.location = 'index.html'; </script>
+<script>
+  var curURL = window.location.href;
+  var pos = curURL.indexOf("?id=");
+  var subjectID = curURL.slice(pos);
+  document.location = "subject.php" + subjectID;
+</script>
 
 </body>
 </html>

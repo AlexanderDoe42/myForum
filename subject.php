@@ -13,20 +13,20 @@
 </head>
 <body>
 <?php
-  function drawPost($content, $author, $title) {
+  function drawPost($postID, $content, $author, $title) {
     static $bg = "";
     $bg = ($bg == "bg1") ? "bg2" : "bg1";
     echo '
-      <div class="post ' . $bg . '">
+      <div id="post' . $postID . '" class="post ' . $bg . '">
         <div class="inner">
           <div class="columns">
             <div class="postbody">
               <div class="posthead">
                 <div>' . $title . '</div>
-                <div>by ' . $author . '</div>
+                <div>by <span id="author_post' . $postID . '">' . $author . '</span></div>
               </div>
-              <button class="reply-button">button</button>
-              <div>' . $content . '</div>
+              <button class="quote-button" onclick="showBox(' . $postID . ')"><img src="/icons/double_quotation_mark.png"></button>
+              <div id="post_content' . $postID . '" class="post_content">' . $content . '</div>
             </div>
             <div class="postprofile">
               <div>' . $author . '</div>
@@ -53,7 +53,7 @@
       $stmt2->execute();
       $result2 = $stmt2->fetch();
       $author = $result2['Username'];
-      drawPost($result['Content'], $author, $result['Title']);
+      drawPost(0, $result['Content'], $author, $result['Title']);
       $result = $stmt->fetch();
     }
     catch(PDOException $e) {
@@ -93,7 +93,7 @@
         $stmt2->execute();
         $result2 = $stmt2->fetch();
         $author = $result2['Username'];
-        drawPost($result['PostContent'], $author, "Re: " . getTitle());
+        drawPost($result['PostID'], $result['PostContent'], $author, "Re: " . getTitle());
         $result = $stmt->fetch();
       }
     }
@@ -107,7 +107,7 @@
 <div class="main-container">
   <div id="forumhead"></div>
   <div id="user-info"></div>
-  <div id="subjects">
+  <div id="posts">
     <?php
       loadDescription();
       loadPosts();
@@ -121,7 +121,7 @@
       <div></div>
     </div>
     <form id="newsomething-form" action="newpost.php" method="post">
-      <textarea name="message" placeholder="type your message here"></textarea>
+      <textarea id="message" name="message" placeholder="type your message here"></textarea>
       <input class="cursor-pointer" type="submit" name="send-button" value="Send">
     </form>
   </div>
@@ -140,6 +140,7 @@
   $("#newsomething-form").attr("action", "newpost.php" + subjectID);
 </script>
 <script src="/js/main.js"></script>
+<script> loadPosts() </script>
 
 </body>
 </html>

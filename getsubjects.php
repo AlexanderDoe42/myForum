@@ -18,7 +18,6 @@ function drawSubject($title, $author, $subjectID) {
             <div class="posthead">
               <div>by ' . $author . '</div>
             </div>
-            <button class="reply-button">button</button>
             <div>
               <a href="subject.php?id=' . $subjectID . '">
                 ' . $title . '

@@ -10,6 +10,9 @@ body {
   padding: 1em 1em 1em 1em;
   margin-bottom: 0.25em;
 }
+#posts {
+  display: none;
+}
 #forumhead {
   border-radius: 0.5em;
   margin-bottom: 0.25em;
@@ -29,11 +32,17 @@ body {
 .bg2 {
   background-color: #ecf3f7;
 }
+.bg3 {
+  background-color: #e8f0b4;
+}
+.bg4 {
+  background-color: #f0eeb4;
+}
 .columns {
   display: flex;
 }
 .postbody {
-  flex: 3;
+  flex: 4;
 }
 .postprofile {
   flex: 1;
@@ -50,9 +59,31 @@ body {
 .posthead {
   display: inline-block;
 }
-.reply-button {
+.quote-button {
   display: inline-block;
   float: right;
+  margin-right: 10px;
+}
+.quote-button img {
+  width: 13px;
+  height: 13px;
+}
+.quote {
+  border: 1px solid #997615;
+  margin: 1em 0.5em 1em 1.7em;
+  padding: 0.5em;
+}
+.quote_author {
+  font-weight: bold;
+  font-size: 0.9em;
+}
+.quote_author img {
+  width: 1em;
+  height: 1em;
+  margin-right: 0.5em;
+}
+.quote_author::after {
+  content: " wrote:"
 }
 .main-container {
   background-color: white;
@@ -185,7 +216,7 @@ body {
   width: 97%;
   height: 80%;
 }
-textarea[name=message] {
+#message {
   display: block;
   margin: auto;
   width: 99%;
@@ -235,4 +266,39 @@ input[name=send-button] {
   display: block;
   margin: auto;
   height: 200px;
+}
+.register-form {
+  width: 30em;
+  margin: auto;
+}
+.register-form > div {
+  width: 80%;
+  margin: auto;
+}
+.username-and-pwd input {
+  display: block;
+  width: 95%;
+  padding: 0.7em;
+}
+.terms {
+  margin-bottom: 2em;
+}
+.register-form > input {
+  width: 10em;
+  display: block;
+  margin: 0em auto 1em auto;
+  padding: 0.5em;
+}
+.register-form h1 {
+  text-align: center;
+}
+.dashed {
+  text-decoration: underline dashed #aaa;
+}
+.input-field {
+  margin: 0 auto 2em auto;
+}
+.error {
+  position: absolute;
+  color: #f00;
 }

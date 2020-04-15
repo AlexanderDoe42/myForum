@@ -292,8 +292,10 @@ input[name=send-button] {
 .register-form h1 {
   text-align: center;
 }
-.dashed {
+.terms span {
   text-decoration: underline dashed #aaa;
+  color: #008;
+  cursor: pointer;
 }
 .input-field {
   margin: 0 auto 2em auto;
@@ -301,4 +303,14 @@ input[name=send-button] {
 .error {
   position: absolute;
   color: #f00;
+}
+.h1-terms {
+  text-align: center;
+}
+.p-terms {
+  border: 1px solid #000;
+  margin: 0 3em 0 3em;
+  max-height: 60%;
+  overflow-y: scroll;
+  background-color: #edeca8;
 }

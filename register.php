@@ -63,36 +63,90 @@ function test_input($data) {
 
 <div class="main-container">
   <div id="forumhead"></div>
-  <form class="register-form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+  <form class="register-form" name="register" onsubmit="return checkForm()" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
     <h1>Registration</h1>
     <div>
       <div class="username-and-pwd">
         <div class="input-field">
-          <input type="text" name="username" placeholder="username" value="<?php echo $username ?>">
-          <div class="error"><?php echo $usernameErr ?></div>
+          <input type="text" name="username" autocomplete="off" placeholder="username" value="<?php echo $username ?>" onkeyup="showHint(this.value)">
+          <div class="error" id="error-username"><?php echo $usernameErr ?></div>
         </div>
         <div class="input-field">
-          <input type="password" name="password" placeholder="password">
-          <div class="error"><?php echo $passwordErr ?></div>
+          <input type="password" name="password" placeholder="password" onkeyup="cleanError(this.name)" autocomplete="new-password">
+          <div class="error" id="error-password"><?php echo $passwordErr ?></div>
         </div>
         <div class="input-field">
-          <input type="password" name="passwordRepeat" placeholder="repeat password">
-          <div class="error"><?php echo $passwordRepeatErr ?></div>
+          <input type="password" name="passwordRepeat" placeholder="repeat password" onkeyup="cleanError(this.name)" autocomplete="new-password">
+          <div class="error" id="error-passwordRepeat"><?php echo $passwordRepeatErr ?></div>
         </div>
       </div>
       <div class="terms">
-        <input type="checkbox" name="terms" id="terms" <?php echo $checked ?>>
-        <label for="terms">I agree to the <span class="dashed">"myForum" Terms</span></label>
-        <div class="error"><?php echo $termsErr ?></div>
+        <input type="checkbox" name="terms" id="terms" <?php echo $checked ?> onchange="cleanError(this.name)">
+        <label for="terms">I agree to the <span style="display:none">"myForum" Terms</span></label><span onclick="showBox('terms')">"myForum" Terms</span>
+        <div class="error" id="error-terms"><?php echo $termsErr ?></div>
       </div>
     </div>
     <input type="submit" value="Submit">
   </form>
 </div>
+<div id="new-something-body">
+  <div id="new-something-box">
+    <div id="close-button" class="cursor-pointer" onclick="closeBox()">
+      <div></div>
+    </div>
+    <h1 class="h1-terms">"myForum" Terms</h1>
+    <p class="p-terms">
+    When using the services in this site you agree to the terms and conditions
+    described herein.<br><br>
+
+By submitting this form you will create an account as registered user of this
+site. That account can be used to identify yourself in this site.<br><br>
+
+You must ensure that you read, understand and agree with the specific rules
+ before using it. You understand and agree that "myForum" assumes no
+  responsibility for the
+ timeliness, deletion, unavailability or failure to store or deliver any user
+  message, content or setting, and in no case will "myForum" be responsible
+  for any damage to your system or loss of data that may result of using our
+  site.<br><br>
+
+You warrant that you will not post or transmit through the means provided
+through this site any material or text that may be found obscene, hateful,
+threatening, defamatory, violative of copyright laws or otherwise unlawful, as
+well as you will not use these services or the data provided through them for
+unauthorized solicitation or advertising.<br><br>
+
+Any content you provide is to be free of charge and royalties for "myForum"
+ and with permission to be published, moved and copied in this site and in
+ accordance with the copyright notices at the bottom of our pages.<br><br>
+
+You agree to be responsible for keeping the confidentiality of the credentials
+used to log into our systems, and to be fully responsible for all activities
+ that occur under this account. In no case will "myForum" be liable for
+  user-provided content or messages. You agree to indemnify, defend, and hold
+   harmless "myForum" from all third party claims, liability, damages and
+   costs arising from your use of our services.<br><br>
+
+The administrators of this site have the right (although not the obligation)
+in their sole discretion to refuse, move, modify or delete any content that may
+ be found objectionable, as well as the right to suspend or terminate any
+  account and refuse any future use of its services to any user without
+  notification.<br><br>
+
+These terms may be amended or changed by "myForum" at any time in its sole
+ discretion by posting them in our website. Your continued use of this website
+  afterwards shall signify your acceptance of such changes.<br><br>
+
+By checking the box below you declare that you agree with these terms of
+service.<br><br>
+    </p>
+  </div>
+</div>
 
 <script>
   $("#forumhead").load("/html/forumhead.html");
 </script>
+<script src="/js/main.js"></script>
 
 </body>
 </html>

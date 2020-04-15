@@ -62,6 +62,8 @@ function showBox(postID) {
   document.getElementById("new-something-body").style.display = "block";
   if (postID == undefined) {
     document.getElementById("message").innerHTML = "";
+  } else if (postID == "terms") {
+    //do nothing
   } else {
     var msg = document.getElementById("post_content" + postID).innerHTML;
     msg = msg.replace(/<div class="quote bg3">/g, '[quote="');
@@ -94,6 +96,48 @@ function printUsername() {
   }
   xmlhttp.open("GET", "/getusername.php", true);
   xmlhttp.send();
+}
+function showHint(str) {
+  if (str.length == 0) {
+    return;
+  }
+  if (window.XMLHttpRequest) {
+    xmlhttp = new XMLHttpRequest();
+  }
+  xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      if (this.responseText.indexOf("taken") != -1) {
+        document.getElementById("error-username").innerHTML = "this name is already taken";
+      } else {
+        document.getElementById("error-username").innerHTML = "";
+      }
+    }
+  }
+  xmlhttp.open("GET", "/searchforuser.php?q=" + str, true);
+  xmlhttp.send();
+}
+function checkForm() {
+  var tmp = true;
+  if (document.register.username.value.length < 3) {
+    document.getElementById("error-username").innerHTML = "must contain at least 3 characters";
+    tmp = false;
+  }
+  if (document.register.password.value.length < 3) {
+    document.getElementById("error-password").innerHTML = "must contain at least 3 characters";
+    tmp = false;
+  }
+  if (document.register.password.value != document.register.passwordRepeat.value) {
+    document.getElementById("error-passwordRepeat").innerHTML = "the passwords do not match";
+    tmp = false;
+  }
+  if (!document.register.terms.checked) {
+    document.getElementById("error-terms").innerHTML = "must be accepted";
+    tmp = false;
+  }
+  return tmp;
+}
+function cleanError(str) {
+  document.getElementById("error-" + str).innerHTML = "";
 }
 function userCondition() {
   if (getCookie("usrID") == "" || getCookie("usrID") == "wrong") {

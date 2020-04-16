@@ -6,11 +6,12 @@
 <body>
 
 <?php
-$username = $_GET['q'];
+$username = test_input($_GET['q']);
 try {
-  $conn = new PDO("mysql:host=localhost;dbname=myForum", "alex", "svetly");
+  $dsn = "mysql:host=localhost;dbname=myForum;charset=utf8";
+  $conn = new PDO($dsn, "alex", "svetly");
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-  $sql = "SELECT Username FROM Users WHERE Username = '$username'";
+  $sql = "SELECT Username FROM Users WHERE Username = " . $conn->quote($username);
   $stmt = $conn->prepare($sql);
   $stmt->execute();
   $result = $stmt->fetch();
@@ -22,6 +23,13 @@ catch(PDOException $e) {
   error_log($e->getMessage(), 0);
 }
 $conn = null;
+
+function test_input($data) {
+  $data = trim($data);
+  $data = stripslashes($data);
+  $data = htmlspecialchars($data);
+  return $data;
+}
 ?>
 
 </body>

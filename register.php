@@ -16,42 +16,63 @@
 <?php
 $username = $password = $passwordRepeat = $checked = "";
 $usernameErr = $passwordErr = $passwordRepeatErr = $termsErr = "";
+$allGood = true;
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if (empty($_POST['username'])) {
     $usernameErr = "required field";
+    $allGood = false;
   } else {
     $username = test_input($_POST['username']);
+    if (strlen($username) < 3) {
+      $allGood = false;
+    }
   }
   if (empty($_POST['password'])) {
     $passwordErr = "required field";
+    $allGood = false;
   } else {
     $password = test_input($_POST['password']);
+    if (strlen($password) < 3) {
+      $allGood = false;
+    }
   }
   if (empty($_POST['passwordRepeat'])) {
     $passwordRepeatErr = "required field";
+    $allGood = false;
   } else {
     $passwordRepeat = test_input($_POST['passwordRepeat']);
+    if ($password != $passwordRepeat) {
+      $allGood = false;
+    }
   }
   if (!isset($_POST['terms'])) {
     $termsErr = "must be accepted";
+    $allGood = false;
   } else {
     $checked = "Checked";
   }
-  try {
-    $conn = new PDO("mysql:host=localhost;dbname=myForum", "alex", "svetly");
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  if ($allGood) {
+    try {
+      $dsn = "mysql:host=localhost;dbname=myForum;charset=utf8";
+      $conn = new PDO($dsn, "alex", "svetly");
+      $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $sql = "INSERT INTO Users (Username, Password, RegistrationDate)
-            VALUES ('$username', '$password', CURDATE())";
-    $stmt = $conn->prepare($sql);
-    $stmt->execute();
-    echo "You have been registered successfully";
+      $sql = "INSERT INTO Users (Username, Password, RegistrationDate)
+              VALUES (:username, :password, CURDATE())";
+      $stmt = $conn->prepare($sql);
+      $stmt->bindValue(":username", $username, PDO::PARAM_STR);
+      $stmt->bindValue(":password", $password, PDO::PARAM_STR);
+      $stmt->execute();
+      echo "<script>document.body.onload = function() { regSuccess(); }</script>";
+    }
+    catch(PDOException $e) {
+      echo "<script>document.body.onload = function() { regFailure(); }</script>";
+      error_log($e->getMessage(), 0);
+    }
+    $conn = null;
+  } else {
+    echo "<script>document.body.onload = function() { regFailure(); }</script>";
   }
-  catch(PDOException $e) {
-    echo "Something went wrong";
-    error_log($e->getMessage(), 0);
-  }
-  $conn = null;
 }
 function test_input($data) {
   $data = trim($data);
@@ -63,31 +84,41 @@ function test_input($data) {
 
 <div class="main-container">
   <div id="forumhead"></div>
-  <form class="register-form" name="register" onsubmit="return checkForm()" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-    <h1>Registration</h1>
-    <div>
-      <div class="username-and-pwd">
-        <div class="input-field">
-          <input type="text" name="username" autocomplete="off" placeholder="username" value="<?php echo $username ?>" onkeyup="showHint(this.value)">
-          <div class="error" id="error-username"><?php echo $usernameErr ?></div>
-        </div>
-        <div class="input-field">
-          <input type="password" name="password" placeholder="password" onkeyup="cleanError(this.name)" autocomplete="new-password">
-          <div class="error" id="error-password"><?php echo $passwordErr ?></div>
-        </div>
-        <div class="input-field">
-          <input type="password" name="passwordRepeat" placeholder="repeat password" onkeyup="cleanError(this.name)" autocomplete="new-password">
-          <div class="error" id="error-passwordRepeat"><?php echo $passwordRepeatErr ?></div>
-        </div>
-      </div>
-      <div class="terms">
-        <input type="checkbox" name="terms" id="terms" <?php echo $checked ?> onchange="cleanError(this.name)">
-        <label for="terms">I agree to the <span style="display:none">"myForum" Terms</span></label><span onclick="showBox('terms')">"myForum" Terms</span>
-        <div class="error" id="error-terms"><?php echo $termsErr ?></div>
-      </div>
+  <div id="registration">
+    <div id="reg-success">
+      <h3>You have been registered successfully!</h3>
+      go to the <a href="/">main page</a>
     </div>
-    <input type="submit" value="Submit">
-  </form>
+    <form class="register-form" name="register" onsubmit="return checkForm()" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+      <h1>Registration</h1>
+      <div onkeyup="enableSubmit()">
+        <div class="username-and-pwd">
+          <div class="input-field">
+            <input type="text" name="username" autocomplete="off" placeholder="username" value="<?php echo $username ?>" onkeyup="showHint(this.value)">
+            <div class="error" id="error-username"><?php echo $usernameErr ?></div>
+          </div>
+          <div class="input-field">
+            <input type="password" name="password" placeholder="password" onkeyup="cleanError(this.name)" autocomplete="new-password">
+            <div class="error" id="error-password"><?php echo $passwordErr ?></div>
+          </div>
+          <div class="input-field">
+            <input type="password" name="passwordRepeat" placeholder="repeat password" onkeyup="cleanError(this.name)" autocomplete="new-password">
+            <div class="error" id="error-passwordRepeat"><?php echo $passwordRepeatErr ?></div>
+          </div>
+        </div>
+        <div class="terms">
+          <input type="checkbox" name="terms" id="terms" <?php echo $checked ?> onchange="cleanError(this.name)">
+          <label for="terms">I agree to the <span style="display:none">"myForum" Terms</span></label><span onclick="showBox('terms')">"myForum" Terms</span>
+          <div class="error" id="error-terms"><?php echo $termsErr ?></div>
+        </div>
+      </div>
+      <input type="submit" name="submit" value="Submit" disabled>
+    </form>
+    <div id="reg-fault">
+      Nope!<br>
+      Check all the fields and try again
+    </div>
+  </div>
 </div>
 <div id="new-something-body">
   <div id="new-something-box">

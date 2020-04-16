@@ -6,7 +6,7 @@ PRIMARY KEY (UserID)
 );
 
 INSERT INTO Users (Username, Password)
-VALUES ('admin', 'admin');
+VALUES ('adminasdfasdfasdf', 'admin');
 
 SELECT Username, Password
 FROM Users

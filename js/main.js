@@ -97,6 +97,13 @@ function printUsername() {
   xmlhttp.open("GET", "/getusername.php", true);
   xmlhttp.send();
 }
+function regSuccess() {
+  document.register.style.display = "none";
+  document.getElementById("reg-success").style.display = "block";
+}
+function regFailure() {
+  document.getElementById("reg-fault").style.display = "block";
+}
 function showHint(str) {
   if (str.length == 0) {
     return;
@@ -122,6 +129,9 @@ function checkForm() {
     document.getElementById("error-username").innerHTML = "must contain at least 3 characters";
     tmp = false;
   }
+  if (document.getElementById("error-username").innerHTML.length > 0) {
+    tmp = false;
+  }
   if (document.register.password.value.length < 3) {
     document.getElementById("error-password").innerHTML = "must contain at least 3 characters";
     tmp = false;
@@ -135,6 +145,16 @@ function checkForm() {
     tmp = false;
   }
   return tmp;
+}
+function enableSubmit() {
+  if ((document.register.username.value.length == 0) ||
+      (document.register.password.value.length == 0) ||
+      (document.register.passwordRepeat.value.length == 0))
+  {
+    document.register.submit.setAttribute("disabled", "");
+  } else {
+    document.register.submit.removeAttribute("disabled");
+  }
 }
 function cleanError(str) {
   document.getElementById("error-" + str).innerHTML = "";

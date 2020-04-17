@@ -1,4 +1,4 @@
-<form id="login-form" action="login.php" method="post">
+<form id="login-form" name="login" action="login.php" method="post" onsubmit="return checkLoginForm()">
   <input type="text" name="username" placeholder="username">
   <input type="password" name="password" placeholder="password">
   <input type="submit" value="Login">

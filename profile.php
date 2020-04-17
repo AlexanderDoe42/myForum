@@ -12,7 +12,12 @@
 
 </head>
 <body>
-
+<?php
+  if (!isset($_COOKIE['usrID'])) {
+    echo "<p style='font-size:10em;'>ERROR 401</p>";
+    exit;
+  }
+?>
 <div class="main-container">
   <div id="forumhead"></div>
   <div id="user-info"></div>

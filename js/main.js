@@ -123,7 +123,7 @@ function showHint(str) {
   xmlhttp.open("GET", "/searchforuser.php?q=" + str, true);
   xmlhttp.send();
 }
-function checkForm() {
+function checkRegForm() {
   var tmp = true;
   if (document.register.username.value.length < 3) {
     document.getElementById("error-username").innerHTML = "must contain at least 3 characters";
@@ -142,6 +142,44 @@ function checkForm() {
   }
   if (!document.register.terms.checked) {
     document.getElementById("error-terms").innerHTML = "must be accepted";
+    tmp = false;
+  }
+  return tmp;
+}
+var colorSwitch = true;
+function blinking() {
+  var color = (colorSwitch) ? "#ffadad" : "#fff";
+  colorSwitch = (colorSwitch) ? false : true;
+  document.login.username.style.background = color;
+}
+var colorSwitch2 = true;
+function blinking2() {
+  var color = (colorSwitch2) ? "#ffadad" : "#fff";
+  colorSwitch2 = (colorSwitch2) ? false : true;
+  document.login.password.style.background = color;
+}
+function checkLoginForm() {
+  var tmp = true;
+  if (document.login.username.value.length == 0) {
+    var myInterval = setInterval(blinking, 70);
+    setTimeout(
+      function() {
+        clearInterval(myInterval);
+        document.login.username.style.background = "#fff";
+      },
+      2000
+    );
+    tmp = false;
+  }
+  if (document.login.password.value.length == 0) {
+    var myInterval2 = setInterval(blinking2, 70);
+    setTimeout(
+      function() {
+        clearInterval(myInterval2);
+        document.login.password.style.background = "#fff";
+      },
+      2000
+    );
     tmp = false;
   }
   return tmp;

@@ -89,7 +89,7 @@ function test_input($data) {
       <h3>You have been registered successfully!</h3>
       go to the <a href="/">main page</a>
     </div>
-    <form class="register-form" name="register" onsubmit="return checkForm()" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+    <form class="register-form" name="register" onsubmit="return checkRegForm()" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
       <h1>Registration</h1>
       <div onkeyup="enableSubmit()">
         <div class="username-and-pwd">

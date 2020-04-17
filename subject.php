@@ -128,16 +128,18 @@
 </div>
 
 <script>
-  $("#forumhead").load("/html/forumhead.html");
-  $("#user-info").load("/html/user-info.html", function(responseTxt, statusTxt, xhr){
-    if(statusTxt == "success") {
-      userCondition();
-    }
-  });
   var curURL = window.location.href;
   var pos = curURL.indexOf("?id=");
   var subjectID = curURL.slice(pos);
   $("#newsomething-form").attr("action", "newpost.php" + subjectID);
+
+  $("#forumhead").load("/html/forumhead.html");
+  $("#user-info").load("/html/user-info.html", function(responseTxt, statusTxt, xhr){
+    if(statusTxt == "success") {
+      userCondition();
+      $("#login-form").attr("action", "login.php" + subjectID);
+    }
+  });
 </script>
 <script src="/js/main.js"></script>
 <script> loadPosts() </script>

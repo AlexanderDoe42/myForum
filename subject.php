@@ -25,7 +25,7 @@
                 <div>' . $title . '</div>
                 <div>by <span id="author_post' . $postID . '">' . $author . '</span></div>
               </div>
-              <button class="quote-button" onclick="showBox(' . $postID . ')"><img src="/icons/double_quotation_mark.png"></button>
+              <button class="quote-button" onclick="replyButtonClickEvent(' . $postID . ')"><img src="/icons/double_quotation_mark.png"></button>
               <div id="post_content' . $postID . '" class="post_content">' . $content . '</div>
             </div>
             <div class="postprofile">
@@ -113,14 +113,14 @@
       loadPosts();
     ?>
   </div>
-  <button onclick="showBox()">Reply</button>
+  <button onclick="replyButtonClickEvent('post')">Reply</button>
 </div>
 <div id="new-something-body">
   <div id="new-something-box">
-    <div id="close-button" class="cursor-pointer" onclick="closeBox()">
+    <div id="close-button" class="cursor-pointer" onclick="closeBox('post')">
       <div></div>
     </div>
-    <form id="newsomething-form" action="newpost.php" method="post">
+    <form id="newsomething-form" name="newpost" action="newpost.php" method="post" onsubmit="return checkNewPostForm()">
       <textarea id="message" name="message" placeholder="type your message here"></textarea>
       <input class="cursor-pointer" type="submit" name="send-button" value="Send">
     </form>

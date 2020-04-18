@@ -212,7 +212,7 @@ body {
   background: url(/icons/close.png) 0 0;
 }
 #newsomething-form {
-  margin: auto;
+  margin:  1em auto auto auto;;
   width: 97%;
   height: 80%;
 }

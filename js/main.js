@@ -58,11 +58,26 @@ function logout() {
   document.getElementById("login-form").style.display = "block";
 }
 
+function newSubjectButtonClickEvent() {
+  if (getCookie("usrID") == "" || getCookie("usrID") == "wrong") {
+    alert("Sign in or sign up to create a new subject");
+  } else {
+    showBox("subject");
+  }
+}
+function replyButtonClickEvent(postID) {
+  if (getCookie("usrID") == "" || getCookie("usrID") == "wrong") {
+    alert("Sign in or sign up to reply");
+  } else {
+    showBox(postID);
+  }
+}
+
 function showBox(postID) {
   document.getElementById("new-something-body").style.display = "block";
-  if (postID == undefined) {
-    document.getElementById("message").innerHTML = "";
-  } else if (postID == "terms") {
+  if (postID == "post") {
+    document.newpost.message.value = "";
+  } else if (postID == "terms" || postID == "subject") {
     //do nothing
   } else {
     var msg = document.getElementById("post_content" + postID).innerHTML;
@@ -76,11 +91,17 @@ function showBox(postID) {
                 '"]' +
                 msg +
                 "[/quote]";
-    document.getElementById("message").innerHTML = quote;
+    document.newpost.message.value = quote;
   }
 }
 
-function closeBox() {
+function closeBox(arg) {
+  if (arg == "post" &&
+      document.newpost.message.value != 0 &&
+      !confirm("Discard message?"))
+  {
+    return;
+  }
   document.getElementById("new-something-body").style.display = "none";
 }
 function printUsername() {
@@ -89,8 +110,12 @@ function printUsername() {
   }
   xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      for (var elm of document.getElementsByClassName("username")) {
-        elm.innerHTML = this.responseText;
+      if (getCookie("usrID") == "") {
+        document.location = "index.html";
+      } else {
+        for (var elm of document.getElementsByClassName("username")) {
+          elm.innerHTML = this.responseText;
+        }
       }
     }
   }
@@ -147,21 +172,21 @@ function checkRegForm() {
   return tmp;
 }
 var colorSwitch = true;
-function blinking() {
+function blinking(obj) {
   var color = (colorSwitch) ? "#ffadad" : "#fff";
   colorSwitch = (colorSwitch) ? false : true;
-  document.login.username.style.background = color;
+  obj.style.background = color;
 }
 var colorSwitch2 = true;
-function blinking2() {
+function blinking2(obj) {
   var color = (colorSwitch2) ? "#ffadad" : "#fff";
   colorSwitch2 = (colorSwitch2) ? false : true;
-  document.login.password.style.background = color;
+  obj.style.background = color;
 }
 function checkLoginForm() {
   var tmp = true;
   if (document.login.username.value.length == 0) {
-    var myInterval = setInterval(blinking, 70);
+    var myInterval = setInterval(function(){blinking(document.login.username)}, 70);
     setTimeout(
       function() {
         clearInterval(myInterval);
@@ -172,11 +197,52 @@ function checkLoginForm() {
     tmp = false;
   }
   if (document.login.password.value.length == 0) {
-    var myInterval2 = setInterval(blinking2, 70);
+    var myInterval2 = setInterval(function(){blinking2(document.login.password)}, 70);
     setTimeout(
       function() {
         clearInterval(myInterval2);
         document.login.password.style.background = "#fff";
+      },
+      2000
+    );
+    tmp = false;
+  }
+  return tmp;
+}
+function checkNewSubjectForm() {
+  var tmp = true;
+  if (document.newsubject.title.value.length == 0) {
+    var myInterval = setInterval(function(){blinking(document.newsubject.title)}, 200);
+    setTimeout(
+      function() {
+        clearInterval(myInterval);
+        document.newsubject.title.style.background = "#fff";
+      },
+      2000
+    );
+    tmp = false;
+  }
+  if (document.newsubject.content.value.length == 0) {
+    var myInterval2 = setInterval(function(){blinking2(document.newsubject.content)}, 200);
+    setTimeout(
+      function() {
+        clearInterval(myInterval2);
+        document.newsubject.content.style.background = "#fff";
+      },
+      2000
+    );
+    tmp = false;
+  }
+  return tmp;
+}
+function checkNewPostForm() {
+  var tmp = true;
+  if (document.newpost.message.value.length == 0) {
+    var myInterval = setInterval(function(){blinking(document.newpost.message)}, 200);
+    setTimeout(
+      function() {
+        clearInterval(myInterval);
+        document.newpost.message.style.background = "#fff";
       },
       2000
     );

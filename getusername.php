@@ -16,6 +16,8 @@ try {
   $result = $stmt->fetch();
   if ($result) {
     echo $result[0];
+  } else {
+    setcookie("usrID", "", time() - 3600);
   }
 }
 catch(PDOException $e) {

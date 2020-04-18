@@ -17,14 +17,14 @@
   <div id="forumhead"></div>
   <div id="user-info"></div>
   <div id="subjects"></div>
-  <button onclick="showBox()">New subject</button>
+  <button onclick="newSubjectButtonClickEvent()">New subject</button>
 </div>
 <div id="new-something-body">
   <div id="new-something-box">
     <div id="close-button" class="cursor-pointer" onclick="closeBox()">
       <div></div>
     </div>
-    <form id="newsomething-form" action="newsubject.php" method="post">
+    <form id="newsomething-form" name="newsubject" action="newsubject.php" method="post" onsubmit="return checkNewSubjectForm()">
       <textarea name="title" placeholder="title of the new subject"></textarea>
       <textarea name="content" placeholder="type description here"></textarea>
       <input class="cursor-pointer" type="submit" name="send-button" value="Create">

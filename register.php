@@ -1,3 +1,6 @@
+<?php
+  include 'includes/autoloader.inc.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $usernameErr = "required field";
     $allGood = false;
   } else {
-    $username = test_input($_POST['username']);
+    $username = Dbh::test_input($_POST['username']);
     if (strlen($username) < 3) {
       $allGood = false;
     }
@@ -31,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $passwordErr = "required field";
     $allGood = false;
   } else {
-    $password = test_input($_POST['password']);
+    $password = Dbh::test_input($_POST['password']);
     if (strlen($password) < 3) {
       $allGood = false;
     }
@@ -40,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $passwordRepeatErr = "required field";
     $allGood = false;
   } else {
-    $passwordRepeat = test_input($_POST['passwordRepeat']);
+    $passwordRepeat = Dbh::test_input($_POST['passwordRepeat']);
     if ($password != $passwordRepeat) {
       $allGood = false;
     }
@@ -52,33 +55,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $checked = "Checked";
   }
   if ($allGood) {
-    try {
-      $dsn = "mysql:host=localhost;dbname=myForum;charset=utf8";
-      $conn = new PDO($dsn, "alex", "svetly");
-      $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-      $sql = "INSERT INTO Users (Username, Password, RegistrationDate)
-              VALUES (:username, :password, CURDATE())";
-      $stmt = $conn->prepare($sql);
-      $stmt->bindValue(":username", $username, PDO::PARAM_STR);
-      $stmt->bindValue(":password", $password, PDO::PARAM_STR);
-      $stmt->execute();
-      echo "<script>document.body.onload = function() { regSuccess(); }</script>";
-    }
-    catch(PDOException $e) {
-      echo "<script>document.body.onload = function() { regFailure(); }</script>";
-      error_log($e->getMessage(), 0);
-    }
-    $conn = null;
+    $myForumDB = new MyDB();
+    $myForumDB->signup($username, $password);
   } else {
     echo "<script>document.body.onload = function() { regFailure(); }</script>";
   }
-}
-function test_input($data) {
-  $data = trim($data);
-  $data = stripslashes($data);
-  $data = htmlspecialchars($data);
-  return $data;
 }
 ?>
 

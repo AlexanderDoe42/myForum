@@ -1,3 +1,6 @@
+<?php
+  include 'includes/autoloader.inc.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,6 +20,7 @@
     echo "<p style='font-size:10em;'>ERROR 401</p>";
     exit;
   }
+  $myForumDB = new MyDB();
 ?>
 <div class="main-container">
   <div id="forumhead"></div>
@@ -30,61 +34,13 @@
     <div class="columns2">
       <div class="username"></div>
       <div>
-        registration date:
-        <?php
-        $usrID = $_COOKIE['usrID'];
-        try {
-          $conn = new PDO("mysql:host=localhost;dbname=myForum", "alex", "svetly");
-          $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-          $sql = "SELECT RegistrationDate FROM Users WHERE UserID = '$usrID'";
-          $stmt = $conn->prepare($sql);
-          $stmt->execute();
-          $result = $stmt->fetch();
-          echo $result['RegistrationDate'];
-        }
-        catch(PDOException $e) {
-          error_log($e->getMessage(), 0);
-        }
-        $conn = null;
-        ?>
+        registration date: <?php $myForumDB->getRegistrationDate() ?>
       </div>
       <div>
-        my subjects:
-        <?php
-        $usrID = $_COOKIE['usrID'];
-        try {
-          $conn = new PDO("mysql:host=localhost;dbname=myForum", "alex", "svetly");
-          $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-          $sql = "SELECT NumberOfSubjects FROM Users WHERE UserID = '$usrID'";
-          $stmt = $conn->prepare($sql);
-          $stmt->execute();
-          $result = $stmt->fetch();
-          echo $result['NumberOfSubjects'];
-        }
-        catch(PDOException $e) {
-          error_log($e->getMessage(), 0);
-        }
-        $conn = null;
-        ?>
+        my subjects: <?php $myForumDB->getNumberOfSubjects() ?>
       </div>
       <div>
-        my posts:
-        <?php
-        $usrID = $_COOKIE['usrID'];
-        try {
-          $conn = new PDO("mysql:host=localhost;dbname=myForum", "alex", "svetly");
-          $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-          $sql = "SELECT NumberOfPosts FROM Users WHERE UserID = '$usrID'";
-          $stmt = $conn->prepare($sql);
-          $stmt->execute();
-          $result = $stmt->fetch();
-          echo $result['NumberOfPosts'];
-        }
-        catch(PDOException $e) {
-          error_log($e->getMessage(), 0);
-        }
-        $conn = null;
-        ?>
+        my posts: <?php $myForumDB->getNumberOfPosts() ?>
       </div>
     </div>
   </div>

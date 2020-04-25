@@ -1,3 +1,6 @@
+<?php
+  include 'includes/autoloader.inc.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,105 +15,16 @@
 
 </head>
 <body>
-<?php
-  function drawPost($postID, $content, $author, $title) {
-    static $bg = "";
-    $bg = ($bg == "bg1") ? "bg2" : "bg1";
-    echo '
-      <div id="post' . $postID . '" class="post ' . $bg . '">
-        <div class="inner">
-          <div class="columns">
-            <div class="postbody">
-              <div class="posthead">
-                <div>' . $title . '</div>
-                <div>by <span id="author_post' . $postID . '">' . $author . '</span></div>
-              </div>
-              <button class="quote-button" onclick="replyButtonClickEvent(' . $postID . ')"><img src="/icons/double_quotation_mark.png"></button>
-              <div id="post_content' . $postID . '" class="post_content">' . $content . '</div>
-            </div>
-            <div class="postprofile">
-              <div>' . $author . '</div>
-              <div>Posts: 242</div>
-            </div>
-          </div>
-          <div class="back2top"><a class="top" href="#top"><img src="icons/angle-circle-arrow-up.png" style="width:18px;height:18px;"></a></div>
-        </div>
-      </div>
-    ';
-  }
-  function loadDescription() {
-    $subjectID = $_GET['id'];
-    try {
-      $conn = new PDO("mysql:host=localhost;dbname=myForum", "alex", "svetly");
-      $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-      $sql="SELECT * FROM Subjects WHERE SubjectID = '$subjectID'";
-      $stmt = $conn->prepare($sql);
-      $stmt->execute();
-      $result = $stmt->fetch();
-      $authorID = $result['AuthorID'];
-      $sql="SELECT Username FROM Users WHERE UserID = '$authorID'";
-      $stmt2 = $conn->prepare($sql);
-      $stmt2->execute();
-      $result2 = $stmt2->fetch();
-      $author = $result2['Username'];
-      drawPost(0, $result['Content'], $author, $result['Title']);
-      $result = $stmt->fetch();
-    }
-    catch(PDOException $e) {
-      error_log($e->getMessage(), 0);
-    }
-    $conn = null;
-  }
-  function getTitle() {
-    $subjectID = $_GET['id'];
-    try {
-      $conn = new PDO("mysql:host=localhost;dbname=myForum", "alex", "svetly");
-      $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-      $sql="SELECT * FROM Subjects WHERE SubjectID = '$subjectID'";
-      $stmt = $conn->prepare($sql);
-      $stmt->execute();
-      $result = $stmt->fetch();
-      return $result['Title'];
-    }
-    catch(PDOException $e) {
-      error_log($e->getMessage(), 0);
-    }
-    $conn = null;
-  }
-  function loadPosts() {
-    $subjectID = $_GET['id'];
-    try {
-      $conn = new PDO("mysql:host=localhost;dbname=myForum", "alex", "svetly");
-      $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-      $sql="SELECT * FROM Posts WHERE SubjectID = '$subjectID'";
-      $stmt = $conn->prepare($sql);
-      $stmt->execute();
-      $result = $stmt->fetch();
-      while ($result) {
-        $authorID = $result['AuthorID'];
-        $sql="SELECT Username FROM Users WHERE UserID = '$authorID'";
-        $stmt2 = $conn->prepare($sql);
-        $stmt2->execute();
-        $result2 = $stmt2->fetch();
-        $author = $result2['Username'];
-        drawPost($result['PostID'], $result['PostContent'], $author, "Re: " . getTitle());
-        $result = $stmt->fetch();
-      }
-    }
-    catch(PDOException $e) {
-      error_log($e->getMessage(), 0);
-    }
-    $conn = null;
-  }
-?>
 
 <div class="main-container">
   <div id="forumhead"></div>
   <div id="user-info"></div>
   <div id="posts">
     <?php
-      loadDescription();
-      loadPosts();
+      $subjectID = $_GET['id'];
+      $myForumDB = new MyDB();
+      $myForumDB->getDescription($subjectID);
+      $myForumDB->getPosts($subjectID);
     ?>
   </div>
   <button onclick="replyButtonClickEvent('post')">Reply</button>

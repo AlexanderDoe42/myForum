@@ -50,3 +50,5 @@ UPDATE Posts
 SET PostContent = '[quote="alex"]how can the earth be spherical[/quote]
 but it is!'
 WHERE PostID = ;
+
+ALTER TABLE Posts CONVERT TO CHARACTER SET utf8;

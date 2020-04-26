@@ -39,6 +39,7 @@ DELETE FROM Posts WHERE PostID = '8';
 ALTER TABLE Users ADD NumberOfSubjects INT DEFAULT 0;
 ALTER TABLE Subjects ADD Content varchar(255) NOT NULL;
 ALTER TABLE Posts ADD SubjectID INT NOT NULL;
+ALTER TABLE Posts ADD Created DATETIME(0);
 
 ALTER TABLE tablename AUTO_INCREMENT = 1; // to reset AUTO_INCREMENT
 
@@ -47,8 +48,6 @@ SET NumberOfPosts = 42
 WHERE UserID = '$usrID';
 
 UPDATE Posts
-SET PostContent = '[quote="alex"]how can the earth be spherical[/quote]
-but it is!'
-WHERE PostID = ;
+SET Created = '2020-01-01 00:00:00';
 
 ALTER TABLE Posts CONVERT TO CHARACTER SET utf8;

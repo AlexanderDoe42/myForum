@@ -7,8 +7,22 @@ body {
 }
 .post {
   border-radius: 0.5em;
-  padding: 1em 1em 1em 1em;
+  padding: 1em 1em 0em 1em;
   margin-bottom: 0.25em;
+}
+.title {
+  font-size: 1.3em;
+}
+.title, .retitle {
+  text-decoration: none;
+  color: #576178;
+}
+.title:hover, .retitle:hover {
+  text-decoration: underline;
+  color: #f20;
+}
+.retitle {
+  font-size: 1.15em;
 }
 #posts {
   display: none;
@@ -51,13 +65,23 @@ body {
 }
 .back2top {
   overflow: auto;
-  margin-right: -1em;
+  margin-right: -0.8em;
 }
 .top {
   float: right;
 }
 .posthead {
   display: inline-block;
+}
+.subjectinfo {
+  font-size: 0.9em;
+}
+.subjectinfo span, .postinfo span {
+  color: #555;
+}
+.postinfo {
+  font-size: 0.79em;
+  margin-bottom: 1em;
 }
 .quote-button {
   display: inline-block;

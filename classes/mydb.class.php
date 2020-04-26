@@ -1,7 +1,7 @@
 <?php
 
 class MyDB extends Dbh {
-  private function drawSubject($title, $author, $subjectID) {
+  private function drawSubject($title, $created, $author, $subjectID) {
     static $bg = "";
     $bg = ($bg == "bg1") ? "bg2" : "bg1";
     echo '
@@ -9,13 +9,12 @@ class MyDB extends Dbh {
         <div class="inner">
           <div class="columns">
             <div class="postbody">
-              <div class="posthead">
-                <div>by ' . $author . '</div>
-              </div>
-              <div>
-                <a href="subject.php?id=' . $subjectID . '">
-                  ' . $title . '
-                </a>
+              <a class="title" href="subject.php?id=' . $subjectID . '">
+                ' . $title . '
+              </a>
+              <div class="subjectinfo">
+                by <a href="#">' . $author . '</a>
+                <span> >> ' . $created . '</span>
               </div>
             </div>
             <div class="postprofile">
@@ -23,12 +22,16 @@ class MyDB extends Dbh {
               <div>Posts: 242</div>
             </div>
           </div>
-          <div class="back2top"><a class="top" href="#top"><img src="icons/angle-circle-arrow-up.png" style="width:18px;height:18px;"></a></div>
+          <div class="back2top">
+            <a class="top" href="#top">
+              <img src="icons/angle-circle-arrow-up.png" style="width:18px;height:18px;">
+            </a>
+          </div>
         </div>
       </div>
     ';
   }
-  private function drawPost($postID, $content, $author, $title) {
+  private function drawPost($postID, $content, $author, $title, $created) {
     static $bg = "";
     $bg = ($bg == "bg1") ? "bg2" : "bg1";
     echo '
@@ -37,8 +40,21 @@ class MyDB extends Dbh {
           <div class="columns">
             <div class="postbody">
               <div class="posthead">
-                <div>' . $title . '</div>
-                <div>by <span id="author_post' . $postID . '">' . $author . '</span></div>
+    ';
+    if ($postID == 0) {
+      echo '
+                <a href="#post0" class="title">' . $title . '</a>
+      ';
+    } else {
+      echo '
+                <a href="#post' . $postID . '" class="retitle">Re: ' . $title . '</a>
+      ';
+    }
+    echo '
+                <div class="postinfo">
+                  by <a href="#" id="author_post' . $postID . '">' . $author . '</a>
+                  <span> >> ' . $created . '</span>
+                </div>
               </div>
               <button class="quote-button" onclick="replyButtonClickEvent(' . $postID . ')"><img src="/icons/double_quotation_mark.png"></button>
               <div id="post_content' . $postID . '" class="post_content">' . $content . '</div>
@@ -65,7 +81,7 @@ class MyDB extends Dbh {
       $stmt2->execute();
       $row2 = $stmt2->fetch();
       $author = $row2['Username'];
-      $this->drawSubject($row['Title'], $author, $row['SubjectID']);
+      $this->drawSubject($row['Title'], $row['Created'], $author, $row['SubjectID']);
     }
   }
   public function getDescription($subjectID) {
@@ -80,7 +96,7 @@ class MyDB extends Dbh {
     $stmt2->execute();
     $result2 = $stmt2->fetch();
     $author = $result2['Username'];
-    $this->drawPost(0, $result['Content'], $author, $result['Title']);
+    $this->drawPost(0, $result['Content'], $author, $result['Title'], $result['Created']);
     $result = $stmt->fetch();
   }
   private function getTitle($subjectID) {
@@ -104,7 +120,7 @@ class MyDB extends Dbh {
       $stmt2->execute();
       $result2 = $stmt2->fetch();
       $author = $result2['Username'];
-      $this->drawPost($result['PostID'], $result['PostContent'], $author, "Re: " . $this->getTitle($subjectID));
+      $this->drawPost($result['PostID'], $result['PostContent'], $author, $this->getTitle($subjectID), $result['Created']);
       $result = $stmt->fetch();
     }
   }

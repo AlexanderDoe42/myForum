@@ -58,10 +58,19 @@ body {
 .postbody {
   flex: 4;
 }
-.postprofile {
+.rightcolumn {
   flex: 1;
   border: 0.1em solid #ffffff;
   border-width: 0 0 0 0.1em;
+  padding-left: 0.5em;
+  font-size: 0.9em;
+}
+.rightcolumn img {
+  width: 5em;
+  height: 5em;
+}
+.online {
+  color: #52d618;
 }
 .back2top {
   overflow: auto;
@@ -76,7 +85,7 @@ body {
 .subjectinfo {
   font-size: 0.9em;
 }
-.subjectinfo span, .postinfo span {
+.datetime {
   color: #555;
 }
 .postinfo {

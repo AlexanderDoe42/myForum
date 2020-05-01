@@ -11,7 +11,7 @@ class Dbh {
     $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->dbName .
            ';charset=' . $this->charset;
     $pdo = new PDO($dsn, $this->user, $this->pwd);
-    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+    //$pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
     return $pdo;
   }
   protected function disconnect($arg) {

@@ -11,7 +11,7 @@
 <?php
 $usrID = $_COOKIE['usrID'];
 $myForumDB = new MyDB();
-$myForumDB->getUsername($usrID);
+$myForumDB->echoUsername($usrID);
 ?>
 
 </body>

@@ -65,6 +65,10 @@ class MyDB extends Dbh {
     } else {
       $status = 'last seen <div class="datetime">' . $lastSeen->format('F d, Y H:i') . '</div>';
     }
+    $profilePicture = '';
+    if ($author['HasAProfilePicture']) {
+      $profilePicture = '<img src="images/id' . $post['AuthorID'] . '.JPG">';
+    }
     static $bg = "";
     $bg = ($bg == "bg1") ? "bg2" : "bg1";
     echo '
@@ -85,7 +89,7 @@ class MyDB extends Dbh {
               <div id="post_content' . $post['PostID'] . '" class="post_content">' . $post['PostContent'] . '</div>
             </div>
             <div class="rightcolumn">
-              <img src="images/id25.JPG">
+              ' . $profilePicture . '
               <div>
                 <a href="#">' . $author['Username'] . '</a>
               </div>
@@ -106,6 +110,10 @@ class MyDB extends Dbh {
     } else {
       $status = 'last seen <div class="datetime">' . $lastSeen->format('F d, Y H:i') . '</div>';
     }
+    $profilePicture = '';
+    if ($author['HasAProfilePicture']) {
+      $profilePicture = '<img src="images/id' . $subject['AuthorID'] . '.JPG">';
+    }
     $bg = "bg2";
     echo '
       <div id="post0" class="post ' . $bg . '">
@@ -123,7 +131,7 @@ class MyDB extends Dbh {
               <div id="post_content0" class="post_content">' . $subject['Content'] . '</div>
             </div>
             <div class="rightcolumn">
-              <img src="images/id25.JPG">
+              ' . $profilePicture . '
               <div>
                 <a href="#">' . $author['Username'] . '</a>
                 ' . $status . '
@@ -175,14 +183,15 @@ class MyDB extends Dbh {
       $this->drawPost($row);
     }
   }
-  private function getUser($usrID) {
+  public function getUser($usrID) {
     $conn = $this->connect();
     $sql = "SELECT Username,
                    RegistrationDate,
                    NumberOfPosts,
                    NumberOfSubjects,
                    LastSeen,
-                   UNIX_TIMESTAMP(LastSeen) AS LastSeenTimestamp
+                   UNIX_TIMESTAMP(LastSeen) AS LastSeenTimestamp,
+                   HasAProfilePicture
             FROM Users
             WHERE UserID = " . $conn->quote($usrID);
     $stmt = $conn->prepare($sql);
@@ -364,6 +373,14 @@ class MyDB extends Dbh {
       error_log($e->getMessage(), 0);
     }
     $conn = null;
+  }
+  public function userProvidedAPicture($userID) {
+    $conn = $this->connect();
+    $sql = "UPDATE Users
+            SET HasAProfilePicture = true
+            WHERE UserID = " . $conn->quote($userID);
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
   }
 }
 

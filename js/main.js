@@ -77,7 +77,7 @@ function showBox(postID) {
   document.getElementById("new-something-body").style.display = "block";
   if (postID == "post") {
     document.newpost.message.value = "";
-  } else if (postID == "terms" || postID == "subject") {
+  } else if (postID == undefined || postID == "terms" || postID == "subject") {
     //do nothing
   } else {
     var msg = document.getElementById("post_content" + postID).innerHTML;
@@ -290,4 +290,10 @@ document.onclick = function(e) {
     document.getElementById("dropdown").style.display = "none";
     t = false;
   }
+}
+function showUploadButton() {
+  document.getElementById("uploadbutton").style.display = 'block';
+}
+function hideUploadButton() {
+  document.getElementById("uploadbutton").style.display = 'none';
 }

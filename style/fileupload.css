@@ -1,0 +1,59 @@
+.preview {
+  border: 1px solid #fff;
+  height: 85%;
+}
+
+form[name=newpicture] img {
+  height: 70%;
+  max-width: 80%;
+  order: 1;
+  display: block;
+  margin: auto;
+}
+
+form[name=newpicture] p {
+  padding-left: 10px;
+  text-align: center;
+}
+
+form[name=newpicture] label,
+form[name=newpicture] button {
+  background-color: #7F9CCB;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px ridge black;
+  font-size: 0.8rem;
+  text-align: center;
+  height: auto;
+  display: block;
+  margin: auto;
+}
+
+form[name=newpicture] label {
+  width: 20em;
+}
+
+form[name=newpicture] label:hover,
+form[name=newpicture] button:hover {
+  background-color: #2D5BA3;
+  color: white;
+}
+
+form[name=newpicture] label:active,
+form[name=newpicture] button:active {
+  background-color: #0D3F8F;
+  color: white;
+}
+form[name=newpicture] button:disabled {
+  background-color: #bbb;
+  color: #888;
+}
+
+#resultBox {
+  position: fixed;
+  background-color: #fff;
+  padding: 2em;
+  bottom: 3em;
+  left: 50%;
+  transform: translate(-50%, 0);
+}

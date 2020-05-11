@@ -10,7 +10,7 @@
 <link rel="icon" href="icons/favicon.ico">
 <link rel="stylesheet" type="text/css" href="font/flaticon.css">
 <link rel="stylesheet" type="text/css" href="style/main.css">
-<link rel="stylesheet" type="text/css" href="style/fileupload.css">
+<link rel="stylesheet" type="text/css" href="style/profile.css">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
@@ -42,18 +42,24 @@
       <?php echo $profilePicture ?>
     </div>
     <div class="profilecolumn2">
-      <div class="username"></div>
-      <div>
-        registration date: <?php echo $user['RegistrationDate'] ?>
-      </div>
-      <div>
-        my subjects: <?php echo $user['NumberOfSubjects'] ?>
-      </div>
-      <div>
-        my posts: <?php echo $user['NumberOfPosts'] ?>
-      </div>
+      <h3 class="username"></h3>
+      <table>
+        <tr>
+          <td>registered</td>
+          <td><?php echo $user['RegistrationDate'] ?></td>
+        </tr>
+        <tr class="trlink" id="mySubjects">
+          <td>my subjects</td>
+          <td><?php echo $user['NumberOfSubjects'] ?></td>
+        </tr>
+        <tr class="trlink" id="myPosts">
+          <td>my posts</td>
+          <td><?php echo $user['NumberOfPosts'] ?></td>
+        </tr>
+      </table>
     </div>
   </div>
+  <div id="users-posts"><div>
 </div>
 <div id="new-something-body">
   <div id="new-something-box">
@@ -84,7 +90,7 @@
   });
 </script>
 <script src="js/main.js"></script>
-<script src="js/fileupload.js"></script>
+<script src="js/profile.js"></script>
 
 </body>
 </html>

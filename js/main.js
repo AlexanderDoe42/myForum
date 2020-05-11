@@ -21,25 +21,31 @@ function getCookie(cname) {
   return "";
 }
 
-function loadPosts() {
+function stylePosts() {
+  const post_content = document.getElementsByClassName("post_content");
   var htmlForQuoteAuthor = '<div class="quote_author"><img src="/icons/double_quotation_mark.png">';
-  var len = document.getElementsByClassName("post_content").length;
+  var len = post_content.length;
   for (i = 0; i < len; i++) {
     var bg_color = "bg4";
-    while (document.getElementsByClassName("post_content")[i].innerHTML.indexOf('[quote="') != -1) {
+    while (post_content[i].innerHTML.indexOf('[quote="') != -1) {
       bg_color = (bg_color == "bg4") ? "bg3" : "bg4";
-      document.getElementsByClassName("post_content")[i].innerHTML =
-      document.getElementsByClassName("post_content")[i].innerHTML.replace('[quote="', '<div class="quote ' + bg_color + '">' + htmlForQuoteAuthor);
+      post_content[i].innerHTML =
+      post_content[i].innerHTML.replace('[quote="', '<div class="quote ' + bg_color + '">' + htmlForQuoteAuthor);
     }
-    document.getElementsByClassName("post_content")[i].innerHTML =
-    document.getElementsByClassName("post_content")[i].innerHTML.replace(/"\]/g, '</div> <!-- quote_author -->');
-    document.getElementsByClassName("post_content")[i].innerHTML =
-    document.getElementsByClassName("post_content")[i].innerHTML.replace(/\[\/quote\]/g, '</div>');
+    post_content[i].innerHTML =
+    post_content[i].innerHTML.replace(/"\]/g, '</div> <!-- quote_author -->');
+    post_content[i].innerHTML =
+    post_content[i].innerHTML.replace(/\[\/quote\]/g, '</div>');
   }
   document.getElementById("posts").style.display = "block";
 }
 
-function loadSubjects() {
+function loadSubjects(query) {
+  if (query == undefined) {
+    query = "";
+  } else {
+    query = "?" + query;
+  }
   if (window.XMLHttpRequest) {
     xmlhttp = new XMLHttpRequest();
   }
@@ -48,7 +54,25 @@ function loadSubjects() {
       document.getElementById("subjects").innerHTML = this.responseText;
     }
   }
-  xmlhttp.open("GET", "getsubjects.php", true);
+  xmlhttp.open("GET", "getsubjects.php" + query, true);
+  xmlhttp.send();
+}
+function loadPosts(query) {
+  if (query == undefined) {
+    query = "";
+  } else {
+    query = "?" + query;
+  }
+  if (window.XMLHttpRequest) {
+    xmlhttp = new XMLHttpRequest();
+  }
+  xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("posts").innerHTML = this.responseText;
+      stylePosts();
+    }
+  }
+  xmlhttp.open("GET", "getposts.php" + query, true);
   xmlhttp.send();
 }
 
@@ -290,10 +314,4 @@ document.onclick = function(e) {
     document.getElementById("dropdown").style.display = "none";
     t = false;
   }
-}
-function showUploadButton() {
-  document.getElementById("uploadbutton").style.display = 'block';
-}
-function hideUploadButton() {
-  document.getElementById("uploadbutton").style.display = 'none';
 }

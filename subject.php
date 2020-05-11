@@ -19,14 +19,14 @@
 <div class="main-container">
   <div id="forumhead"></div>
   <div id="user-info"></div>
-  <div id="posts">
+  <div>
     <?php
-      $subjectID = $_GET['id'];
+      $subjectID = Dbh::test_input($_GET['id']);
       $myForumDB = new MyDB();
       $myForumDB->getDescription($subjectID);
-      $myForumDB->getPosts($subjectID);
     ?>
   </div>
+  <div id="posts"></div>
   <button onclick="replyButtonClickEvent('post')">Reply</button>
 </div>
 <div id="new-something-body">
@@ -56,7 +56,12 @@
   });
 </script>
 <script src="/js/main.js"></script>
-<script> loadPosts() </script>
+<script>
+  var query = "SubjectID=";
+  params = new URLSearchParams(location.search);
+  query += params.get("id");
+  loadPosts(query);
+</script>
 
 </body>
 </html>

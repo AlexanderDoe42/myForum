@@ -13,9 +13,12 @@
 $myForumDB = new MyDB();
 if (isset($_GET["AuthorID"])) {
   $authorID = Dbh::test_input($_GET["AuthorID"]);
-  $myForumDB->getSubjects($authorID);
+  $myForumDB->getPosts(NULL, $authorID);
+} elseif (isset($_GET["SubjectID"])) {
+  $subjectID = Dbh::test_input($_GET["SubjectID"]);
+  $myForumDB->getPosts($subjectID, NULL);
 } else {
-  $myForumDB->getSubjects(NULL);
+  $myForumDB->getPosts(NULL, NULL);
 }
 
 ?>

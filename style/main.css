@@ -140,7 +140,7 @@ body {
 #wrong-password {
   display: none;
 }
-#havingloggedin::after {
+.clearfix::after {
   content: "";
   clear: both;
   display: table;
@@ -285,11 +285,23 @@ input[name=send-button] {
 .profilecolumn1 {
   flex: 1;
   position: relative;
-  border: 1px solid #000;
 }
 .profilecolumn2 {
   flex: 3;
-  border: 1px solid #000;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+.profilecolumn2 table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.profilecolumn2 td {
+  padding: 0.5em;
+  border-bottom: 1px dotted #333;
+}
+.trlink:hover {
+  cursor: pointer;
+  background-color: #cbf5da;
 }
 .profile {
   border-radius: 0.5em;

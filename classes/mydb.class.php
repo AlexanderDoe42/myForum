@@ -144,10 +144,15 @@ class MyDB extends Dbh {
     ';
   }
 
-  public function getSubjects() {
+  public function getSubjects($authorID) {
     $conn = $this->connect();
-    $sql="SELECT * FROM Subjects";
-    $stmt = $conn->query($sql);
+    if ($authorID) {
+      $sql="SELECT * FROM Subjects WHERE AuthorID = " . $conn->quote($authorID);
+    } else {
+      $sql="SELECT * FROM Subjects";
+    }
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
     while ($row = $stmt->fetch()) {
       $this->drawSubject($row);
     }
@@ -174,9 +179,25 @@ class MyDB extends Dbh {
     $result = $stmt->fetch();
     $this->drawDescription($result);
   }
-  public function getPosts($subjectID) {
+  public function getPosts($subjectID, $authorID) {
     $conn = $this->connect();
-    $sql="SELECT * FROM Posts WHERE SubjectID = " . $conn->quote($subjectID);
+    $sql = "SELECT * FROM Posts";
+    $needAND = false;
+    if ($subjectID || $authorID) {
+      $sql = $sql . " WHERE ";
+    }
+    if ($subjectID) {
+      $sql = $sql . "SubjectID = " . $conn->quote($subjectID);
+      $needAND = true;
+    }
+    if ($authorID) {
+      if ($needAND) {
+        $sql = $sql . " AND ";
+      }
+      $sql = $sql . "AuthorID = " . $conn->quote($authorID);
+      $needAND = true;
+    }
+    error_log($sql, 0);
     $stmt = $conn->prepare($sql);
     $stmt->execute();
     while ($row = $stmt->fetch()) {

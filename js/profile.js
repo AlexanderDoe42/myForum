@@ -12,7 +12,6 @@ function updateImageDisplay() {
   const files = input.files;
   if(files.length !== 0) {
     file = files[0];
-    console.log(file.type);
     const para = document.createElement('p');
     if(validFileType(file)) {
       if (file.size <= 512000) {
@@ -99,4 +98,80 @@ if (params.has('q')) {
       resultBox.style.opacity = opacity;
     }
   }
+}
+function showUploadButton() {
+  document.getElementById("uploadbutton").style.display = 'block';
+}
+function hideUploadButton() {
+  document.getElementById("uploadbutton").style.display = 'none';
+}
+
+const mySubjects = document.querySelector('#mySubjects');
+const myPosts = document.querySelector('#myPosts');
+mySubjects.addEventListener('click', loadUsersSubjects);
+myPosts.addEventListener('click', loadUsersPosts);
+
+function loadUsersSubjects() {
+  const main = document.querySelector("#users-posts");
+  main.style.minHeight = '6em';
+  main.innerHTML = "";
+
+  const head = document.createElement('div');
+  head.setAttribute("id", "users-posts__head");
+  const h = document.createElement('h4');
+  h.textContent = "My subjects";
+  head.appendChild(h);
+  const whiteBlock = document.createElement('div');
+  head.appendChild(whiteBlock);
+  main.appendChild(head);
+
+  const noSubjects = document.createElement('div');
+  noSubjects.setAttribute("class", "post bg2 no-posts");
+  noSubjects.textContent = "no subjects";
+  main.appendChild(noSubjects);
+
+  const subjects = document.createElement('div');
+  subjects.setAttribute("id", "subjects");
+  main.appendChild(subjects);
+
+  var query = "AuthorID=";
+  params = new URLSearchParams(location.search);
+  if (params.has("AuthorID")) {
+    query += params.get("AuthorID");
+  } else {
+    query += getCookie("usrID");
+  }
+  loadSubjects(query);
+}
+function loadUsersPosts() {
+  const main = document.querySelector("#users-posts");
+  main.style.minHeight = '6em';
+  main.innerHTML = "";
+
+  const head = document.createElement('div');
+  head.setAttribute("id", "users-posts__head");
+  const h = document.createElement('h4');
+  h.textContent = "My posts";
+  head.appendChild(h);
+  const whiteBlock = document.createElement('div');
+  head.appendChild(whiteBlock);
+  main.appendChild(head);
+
+  const noPosts = document.createElement('div');
+  noPosts.setAttribute("class", "post bg2 no-posts");
+  noPosts.textContent = "no posts";
+  main.appendChild(noPosts);
+
+  const posts = document.createElement('div');
+  posts.setAttribute("id", "posts");
+  main.appendChild(posts);
+
+  var query = "AuthorID=";
+  params = new URLSearchParams(location.search);
+  if (params.has("AuthorID")) {
+    query += params.get("AuthorID");
+  } else {
+    query += getCookie("usrID");
+  }
+  loadPosts(query);
 }

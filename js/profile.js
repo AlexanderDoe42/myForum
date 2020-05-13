@@ -65,7 +65,7 @@ function returnFileSize(number) {
 
 input.addEventListener('change', updateImageDisplay);
 
-let params = new URLSearchParams(location.search);
+var params = new URLSearchParams(location.search);
 if (params.has('q')) {
   const body = document.body;
   const resultBox = document.createElement('div');
@@ -99,6 +99,12 @@ if (params.has('q')) {
     }
   }
 }
+
+const uploadButton = document.querySelector('.profile__column1__button');
+if (!params.has("id")) {
+  uploadButton.addEventListener('mouseover', showUploadButton);
+  uploadButton.addEventListener('mouseout', hideUploadButton);
+}
 function showUploadButton() {
   document.getElementById("uploadbutton").style.display = 'block';
 }
@@ -119,7 +125,12 @@ function loadUsersSubjects() {
   const head = document.createElement('div');
   head.setAttribute("id", "users-posts__head");
   const h = document.createElement('h4');
-  h.textContent = "My subjects";
+  if (params.has("id")) {
+    let username = document.querySelector(".profile__column2 h3").innerHTML;
+    h.textContent = username + "'s subjects";
+  } else {
+    h.textContent = "My subjects";
+  }
   head.appendChild(h);
   const whiteBlock = document.createElement('div');
   head.appendChild(whiteBlock);
@@ -135,9 +146,8 @@ function loadUsersSubjects() {
   main.appendChild(subjects);
 
   var query = "AuthorID=";
-  params = new URLSearchParams(location.search);
-  if (params.has("AuthorID")) {
-    query += params.get("AuthorID");
+  if (params.has("id")) {
+    query += params.get("id");
   } else {
     query += getCookie("usrID");
   }
@@ -151,7 +161,12 @@ function loadUsersPosts() {
   const head = document.createElement('div');
   head.setAttribute("id", "users-posts__head");
   const h = document.createElement('h4');
-  h.textContent = "My posts";
+  if (params.has("id")) {
+    let username = document.querySelector(".profile__column2 h3").innerHTML;
+    h.textContent = username + "'s posts";
+  } else {
+    h.textContent = "My posts";
+  }
   head.appendChild(h);
   const whiteBlock = document.createElement('div');
   head.appendChild(whiteBlock);
@@ -167,9 +182,8 @@ function loadUsersPosts() {
   main.appendChild(posts);
 
   var query = "AuthorID=";
-  params = new URLSearchParams(location.search);
-  if (params.has("AuthorID")) {
-    query += params.get("AuthorID");
+  if (params.has("id")) {
+    query += params.get("id");
   } else {
     query += getCookie("usrID");
   }

@@ -137,9 +137,7 @@ function printUsername() {
       if (getCookie("usrID") == "") {
         document.location = "index.html";
       } else {
-        for (var elm of document.getElementsByClassName("username")) {
-          elm.innerHTML = this.responseText;
-        }
+        document.getElementById("username").innerHTML = this.responseText;
       }
     }
   }

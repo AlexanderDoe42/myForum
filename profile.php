@@ -17,13 +17,39 @@
 </head>
 <body>
 <?php
-  if (!isset($_COOKIE['usrID'])) {
+  $status = "";
+  $whose = "my ";
+  if (isset($_GET['id'])) {
+    $userID = Dbh::test_input($_GET['id']);
+    if (isset($_COOKIE['usrID'])) {
+      $myID = Dbh::test_input($_COOKIE['usrID']);
+      if ($myID == $userID) {
+        header("Location: profile.php", TRUE, 307);
+        exit;
+      }
+    }
+    $status = "true";
+  } elseif (isset($_COOKIE['usrID'])) {
+    $userID = Dbh::test_input($_COOKIE['usrID']);
+  } else {
     echo "<p style='font-size:10em;'>ERROR 401</p>";
     exit;
   }
-  $userID = $_COOKIE['usrID'];
   $myForumDB = new MyDB();
   $user = $myForumDB->getUser($userID);
+  if ($status == "true") {
+    $lastSeen = DateTime::createFromFormat('Y-m-d H:i:s', $user['LastSeen']);
+    if (time() - $user['LastSeenTimestamp'] < 240) {
+      $status = '<div class="profile__column2__last-seen">
+                   <div class="online">Online</div>
+                 </div>';
+    } else {
+      $status = '<div class="profile__column2__last-seen">
+                   last seen <div class="datetime">' . $lastSeen->format('F d, Y H:i') . '</div>
+                 </div>';
+    }
+    $whose = "";
+  }
   if ($user['HasAProfilePicture']) {
     $pictureID = $userID;
   } else {
@@ -35,25 +61,26 @@
   <div id="forumhead"></div>
   <div id="user-info"></div>
   <div class="columns profile">
-    <div class="profilecolumn1">
-      <div onmouseover="showUploadButton()" onmouseout="hideUploadButton()" class="qube">
+    <div class="profile__column1">
+      <div class="profile__column1__button">
         <button onclick="showBox()" id="uploadbutton">Upload a new photo</button>
       </div>
       <?php echo $profilePicture ?>
     </div>
-    <div class="profilecolumn2">
-      <h3 class="username"></h3>
+    <div class="profile__column2">
+      <h3><?php echo $user['Username'] ?></h3>
+      <?php echo $status ?>
       <table>
         <tr>
           <td>registered</td>
           <td><?php echo $user['RegistrationDate'] ?></td>
         </tr>
         <tr class="trlink" id="mySubjects">
-          <td>my subjects</td>
+          <td><?php echo $whose ?>subjects</td>
           <td><?php echo $user['NumberOfSubjects'] ?></td>
         </tr>
         <tr class="trlink" id="myPosts">
-          <td>my posts</td>
+          <td><?php echo $whose ?>posts</td>
           <td><?php echo $user['NumberOfPosts'] ?></td>
         </tr>
       </table>

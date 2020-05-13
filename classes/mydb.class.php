@@ -33,7 +33,7 @@ class MyDB extends Dbh {
                 ' . $subject['Title'] . '
               </a>
               <div class="subjectinfo">
-                by <a href="#">' . $author['Username'] . '</a>
+                by <a href="profile.php?id=' . $author['UserID'] . '">' . $author['Username'] . '</a>
                 <span class="datetime"> >> ' . $subject['Created'] . '</span>
               </div>
             </div>
@@ -41,9 +41,10 @@ class MyDB extends Dbh {
               <div>' . $subject['NumberOfPosts'] . ' posts</div>
               <div>
                 last post by
-                <a href="#">' . $lastPostAuthor['Username'] . '</a>
+                <a href="profile.php?id=' . $lastPostAuthor['UserID'] . '">' . $lastPostAuthor['Username'] . '</a>
               </div>
-              <div class="datetime">' . $lastPost['Created'] . '</div>
+              <div class="datetime
+              ">' . $lastPost['Created'] . '</div>
             </div>
           </div>
           <div class="back2top">
@@ -79,7 +80,7 @@ class MyDB extends Dbh {
               <div class="posthead">
                 <a href="#post' . $post['PostID'] . '" class="retitle">Re: ' . $title . '</a>
                 <div class="postinfo">
-                  by <a href="#" id="author_post' . $post['PostID'] . '">' . $author['Username'] . '</a>
+                  by <a href="profile.php?id=' . $post['AuthorID'] . '" id="author_post' . $post['PostID'] . '">' . $author['Username'] . '</a>
                   <span class="datetime"> >> ' . $post['Created'] . '</span>
                 </div>
               </div>
@@ -91,7 +92,7 @@ class MyDB extends Dbh {
             <div class="rightcolumn">
               ' . $profilePicture . '
               <div>
-                <a href="#">' . $author['Username'] . '</a>
+                <a href="profile.php?id=' . $post['AuthorID'] . '">' . $author['Username'] . '</a>
               </div>
               ' . $status . '
             </div>
@@ -123,7 +124,7 @@ class MyDB extends Dbh {
               <div class="posthead">
                 <a href="#post0" class="title">' . $subject['Title'] . '</a>
                 <div class="postinfo">
-                  by <a href="#" id="author_post0">' . $author['Username'] . '</a>
+                  by <a href="profile.php?id=' . $subject['AuthorID'] . '" id="author_post0">' . $author['Username'] . '</a>
                   <span class="datetime"> >> ' . $subject['Created'] . '</span>
                 </div>
               </div>
@@ -133,7 +134,7 @@ class MyDB extends Dbh {
             <div class="rightcolumn">
               ' . $profilePicture . '
               <div>
-                <a href="#">' . $author['Username'] . '</a>
+                <a href="profile.php?id=' . $subject['AuthorID'] . '">' . $author['Username'] . '</a>
                 ' . $status . '
               </div>
             </div>
@@ -197,7 +198,6 @@ class MyDB extends Dbh {
       $sql = $sql . "AuthorID = " . $conn->quote($authorID);
       $needAND = true;
     }
-    error_log($sql, 0);
     $stmt = $conn->prepare($sql);
     $stmt->execute();
     while ($row = $stmt->fetch()) {
@@ -206,7 +206,8 @@ class MyDB extends Dbh {
   }
   public function getUser($usrID) {
     $conn = $this->connect();
-    $sql = "SELECT Username,
+    $sql = "SELECT UserID,
+                   Username,
                    RegistrationDate,
                    NumberOfPosts,
                    NumberOfSubjects,

@@ -282,51 +282,9 @@ input[name=send-button] {
 .cursor-pointer {
   cursor: pointer;
 }
-.profilecolumn1 {
-  flex: 1;
-  position: relative;
-}
-.profilecolumn2 {
-  flex: 3;
-  padding-left: 1em;
-  padding-right: 1em;
-}
-.profilecolumn2 table {
-  width: 100%;
-  border-collapse: collapse;
-}
-.profilecolumn2 td {
-  padding: 0.5em;
-  border-bottom: 1px dotted #333;
-}
 .trlink:hover {
   cursor: pointer;
   background-color: #cbf5da;
-}
-.profile {
-  border-radius: 0.5em;
-  padding: 1em 1em 1em 1em;
-  margin-bottom: 0.25em;
-  background-color: #acfac1;
-}
-.profilepicture {
-  display: block;
-  position: relative;
-  margin-left: auto;
-  margin-right: auto;
-  width: 80%;
-  max-height: 20em;
-}
-.qube {
-  display: flex;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  z-index: 2;
-}
-.qube button {
-  margin: auto;
-  display: none;
 }
 .register-form {
   width: 30em;

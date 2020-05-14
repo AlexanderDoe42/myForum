@@ -78,7 +78,7 @@ class MyDB extends Dbh {
           <div class="columns">
             <div class="postbody">
               <div class="posthead">
-                <a href="#post' . $post['PostID'] . '" class="retitle">Re: ' . $title . '</a>
+                <a href="subject.php?id=' . $post['SubjectID'] . '#post' . $post['PostID'] . '" class="retitle">Re: ' . $title . '</a>
                 <div class="postinfo">
                   by <a href="profile.php?id=' . $post['AuthorID'] . '" id="author_post' . $post['PostID'] . '">' . $author['Username'] . '</a>
                   <span class="datetime"> >> ' . $post['Created'] . '</span>

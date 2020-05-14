@@ -70,6 +70,12 @@ function loadPosts(query) {
     if (this.readyState == 4 && this.status == 200) {
       document.getElementById("posts").innerHTML = this.responseText;
       stylePosts();
+      var curURL = window.location.href;
+      var pos = curURL.indexOf("#");
+      if (pos != -1) {
+        var postID = curURL.slice(pos+1);
+        document.getElementById(postID).scrollIntoView();
+      }
     }
   }
   xmlhttp.open("GET", "getposts.php" + query, true);

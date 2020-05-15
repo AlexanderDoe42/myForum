@@ -37,8 +37,11 @@
   }
   $myForumDB = new MyDB();
   $user = $myForumDB->getUser($userID);
+  $registered = new DateTime();
+  $registered->setTimestamp($user['RegistrationDateTimestamp'] - $myForumDB->tzOffset);
   if ($status == "true") {
-    $lastSeen = DateTime::createFromFormat('Y-m-d H:i:s', $user['LastSeen']);
+    $lastSeen = new DateTime();
+    $lastSeen->setTimestamp($user['LastSeenTimestamp'] - $myForumDB->tzOffset);
     if (time() - $user['LastSeenTimestamp'] < 240) {
       $status = '<div class="profile__column2__last-seen">
                    <div class="online">Online</div>
@@ -73,7 +76,7 @@
       <table>
         <tr>
           <td>registered</td>
-          <td><?php echo $user['RegistrationDate'] ?></td>
+          <td><?php echo $registered->format('F d, Y H:i') ?></td>
         </tr>
         <tr class="trlink" id="mySubjects">
           <td><?php echo $whose ?>subjects</td>

@@ -21,6 +21,9 @@ function getCookie(cname) {
   return "";
 }
 
+var tzOffset = new Date().getTimezoneOffset();
+setCookie("tz", tzOffset * 60, 100);
+
 function stylePosts() {
   const post_content = document.getElementsByClassName("post_content");
   var htmlForQuoteAuthor = '<div class="quote_author"><img src="/icons/double_quotation_mark.png">';

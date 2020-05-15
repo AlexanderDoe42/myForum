@@ -1,6 +1,8 @@
 <?php
 
 class MyDB extends Dbh {
+  public $tzOffset;
+
   function __construct() {
     if (isset($_COOKIE['usrID']) && $_COOKIE['usrID'] != 'wrong') {
       $usrID = $_COOKIE['usrID'];
@@ -11,6 +13,7 @@ class MyDB extends Dbh {
       $stmt = $conn->prepare($sql);
       $stmt->execute();
     }
+    $this->tzOffset = $this->test_input($_COOKIE['tz']);
   }
   private function drawSubject($subject) {
     $author = $this->getUser($subject['AuthorID']);
@@ -22,6 +25,10 @@ class MyDB extends Dbh {
       $lastPostAuthorID = $lastPost['AuthorID'];
       $lastPostAuthor = $this->getUser($lastPostAuthorID);
     }
+    $created = new DateTime();
+    $created->setTimestamp($subject['CreatedTimestamp'] - $this->tzOffset);
+    $lastPostCreated = new DateTime();
+    $lastPostCreated->setTimestamp($lastPost['CreatedTimestamp'] - $this->tzOffset);
     static $bg = "";
     $bg = ($bg == "bg1") ? "bg2" : "bg1";
     echo '
@@ -34,7 +41,7 @@ class MyDB extends Dbh {
               </a>
               <div class="subjectinfo">
                 by <a href="profile.php?id=' . $author['UserID'] . '">' . $author['Username'] . '</a>
-                <span class="datetime"> >> ' . $subject['Created'] . '</span>
+                <span class="datetime"> >> ' . $created->format('F d, Y H:i') . '</span>
               </div>
             </div>
             <div class="rightcolumn">
@@ -44,7 +51,7 @@ class MyDB extends Dbh {
                 <a href="profile.php?id=' . $lastPostAuthor['UserID'] . '">' . $lastPostAuthor['Username'] . '</a>
               </div>
               <div class="datetime
-              ">' . $lastPost['Created'] . '</div>
+              ">' . $lastPostCreated->format('F d, Y H:i') . '</div>
             </div>
           </div>
           <div class="back2top">
@@ -60,7 +67,10 @@ class MyDB extends Dbh {
     $subject = $this->getSubject($post['SubjectID']);
     $title = $subject['Title'];
     $author = $this->getUser($post['AuthorID']);
-    $lastSeen = DateTime::createFromFormat('Y-m-d H:i:s', $author['LastSeen']);
+    $created = new DateTime();
+    $created->setTimestamp($post['CreatedTimestamp'] - $this->tzOffset);
+    $lastSeen = new DateTime();
+    $lastSeen->setTimestamp($author['LastSeenTimestamp'] - $this->tzOffset);
     if (time() - $author['LastSeenTimestamp'] < 240) {
       $status = '<div class="online">Online</div>';
     } else {
@@ -81,7 +91,7 @@ class MyDB extends Dbh {
                 <a href="subject.php?id=' . $post['SubjectID'] . '#post' . $post['PostID'] . '" class="retitle">Re: ' . $title . '</a>
                 <div class="postinfo">
                   by <a href="profile.php?id=' . $post['AuthorID'] . '" id="author_post' . $post['PostID'] . '">' . $author['Username'] . '</a>
-                  <span class="datetime"> >> ' . $post['Created'] . '</span>
+                  <span class="datetime"> >> ' . $created->format('F d, Y H:i') . '</span>
                 </div>
               </div>
               <button class="quote-button" onclick="replyButtonClickEvent(' . $post['PostID'] . ')">
@@ -105,7 +115,10 @@ class MyDB extends Dbh {
   private function drawDescription($subject) {
     $author = $this->getUser($subject['AuthorID']);
     $status = "";
-    $lastSeen = DateTime::createFromFormat('Y-m-d H:i:s', $author['LastSeen']);
+    $created = new DateTime();
+    $created->setTimestamp($subject['CreatedTimestamp'] - $this->tzOffset);
+    $lastSeen = new DateTime();
+    $lastSeen->setTimestamp($author['LastSeenTimestamp'] - $this->tzOffset);
     if (time() - $author['LastSeenTimestamp'] < 240) {
       $status = '<div class="online">Online</div>';
     } else {
@@ -125,7 +138,7 @@ class MyDB extends Dbh {
                 <a href="#post0" class="title">' . $subject['Title'] . '</a>
                 <div class="postinfo">
                   by <a href="profile.php?id=' . $subject['AuthorID'] . '" id="author_post0">' . $author['Username'] . '</a>
-                  <span class="datetime"> >> ' . $subject['Created'] . '</span>
+                  <span class="datetime"> >> ' . $created->format('F d, Y H:i') . '</span>
                 </div>
               </div>
               <button class="quote-button" onclick="replyButtonClickEvent(0)"><img src="/icons/double_quotation_mark.png"></button>
@@ -147,10 +160,16 @@ class MyDB extends Dbh {
 
   public function getSubjects($authorID) {
     $conn = $this->connect();
+    $sql="SELECT SubjectID,
+                 AuthorID,
+                 UNIX_TIMESTAMP(Created) AS CreatedTimestamp,
+                 Title,
+                 NumberOfPosts,
+                 Content,
+                 LastPostID
+          FROM Subjects";
     if ($authorID) {
-      $sql="SELECT * FROM Subjects WHERE AuthorID = " . $conn->quote($authorID);
-    } else {
-      $sql="SELECT * FROM Subjects";
+      $sql = $sql . " WHERE AuthorID = " . $conn->quote($authorID);
     }
     $stmt = $conn->prepare($sql);
     $stmt->execute();
@@ -160,21 +179,43 @@ class MyDB extends Dbh {
   }
   private function getPost($postID) {
     $conn = $this->connect();
-    $sql="SELECT * FROM Posts WHERE PostID = " . $conn->quote($postID);
+    $sql="SELECT PostID,
+                 AuthorID,
+                 PostContent,
+                 SubjectID,
+                 UNIX_TIMESTAMP(Created) AS CreatedTimestamp
+          FROM Posts
+          WHERE PostID = " . $conn->quote($postID);
     $stmt = $conn->prepare($sql);
     $stmt->execute();
     return $stmt->fetch();
   }
   private function getSubject($subjectID) {
     $conn = $this->connect();
-    $sql="SELECT * FROM Subjects WHERE SubjectID = " . $conn->quote($subjectID);
+    $sql="SELECT SubjectID,
+                 AuthorID,
+                 UNIX_TIMESTAMP(Created) AS CreatedTimestamp,
+                 Title,
+                 NumberOfPosts,
+                 Content,
+                 LastPostID
+          FROM Subjects
+          WHERE SubjectID = " . $conn->quote($subjectID);
     $stmt = $conn->prepare($sql);
     $stmt->execute();
     return $stmt->fetch();
   }
   public function getDescription($subjectID) {
     $conn = $this->connect();
-    $sql="SELECT * FROM Subjects WHERE SubjectID = " . $conn->quote($subjectID);
+    $sql="SELECT SubjectID,
+                 AuthorID,
+                 UNIX_TIMESTAMP(Created) AS CreatedTimestamp,
+                 Title,
+                 NumberOfPosts,
+                 Content,
+                 LastPostID
+          FROM Subjects
+          WHERE SubjectID = " . $conn->quote($subjectID);
     $stmt = $conn->prepare($sql);
     $stmt->execute();
     $result = $stmt->fetch();
@@ -182,7 +223,12 @@ class MyDB extends Dbh {
   }
   public function getPosts($subjectID, $authorID) {
     $conn = $this->connect();
-    $sql = "SELECT * FROM Posts";
+    $sql="SELECT PostID,
+                 AuthorID,
+                 PostContent,
+                 SubjectID,
+                 UNIX_TIMESTAMP(Created) AS CreatedTimestamp
+            FROM Posts";
     $needAND = false;
     if ($subjectID || $authorID) {
       $sql = $sql . " WHERE ";
@@ -208,10 +254,9 @@ class MyDB extends Dbh {
     $conn = $this->connect();
     $sql = "SELECT UserID,
                    Username,
-                   RegistrationDate,
+                   UNIX_TIMESTAMP(RegistrationDate) AS RegistrationDateTimestamp,
                    NumberOfPosts,
                    NumberOfSubjects,
-                   LastSeen,
                    UNIX_TIMESTAMP(LastSeen) AS LastSeenTimestamp,
                    HasAProfilePicture
             FROM Users
@@ -312,7 +357,9 @@ class MyDB extends Dbh {
       $stmt = $conn->prepare($sql);
       $stmt->execute();
 
-      $sql = "SELECT MAX(PostID) FROM Posts WHERE SubjectID = " . $conn->quote($subjectID);
+      $sql = "SELECT MAX(PostID)
+              FROM Posts
+              WHERE SubjectID = " . $conn->quote($subjectID);
       $stmt = $conn->prepare($sql);
       $stmt->execute();
       $lastPostID = $stmt->fetch()[0];
@@ -331,59 +378,13 @@ class MyDB extends Dbh {
     }
     $conn = null;
   }
-  public function getRegistrationDate() {
-    $usrID = $_COOKIE['usrID'];
-    try {
-      $conn = $this->connect();
-      $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-      $sql = "SELECT RegistrationDate FROM Users WHERE UserID = " . $conn->quote($usrID);
-      $stmt = $conn->prepare($sql);
-      $stmt->execute();
-      $result = $stmt->fetch();
-      echo $result['RegistrationDate'];
-    }
-    catch(PDOException $e) {
-      error_log($e->getMessage(), 0);
-    }
-    $conn = null;
-  }
-  public function getNumberOfSubjects() {
-    $usrID = $_COOKIE['usrID'];
-    try {
-      $conn = $this->connect();
-      $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-      $sql = "SELECT NumberOfSubjects FROM Users WHERE UserID = " . $conn->quote($usrID);
-      $stmt = $conn->prepare($sql);
-      $stmt->execute();
-      $result = $stmt->fetch();
-      echo $result['NumberOfSubjects'];
-    }
-    catch(PDOException $e) {
-      error_log($e->getMessage(), 0);
-    }
-    $conn = null;
-  }
-  public function getNumberOfPosts() {
-    $usrID = $_COOKIE['usrID'];
-    try {
-      $conn = $this->connect();
-      $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-      $sql = "SELECT NumberOfPosts FROM Users WHERE UserID = " . $conn->quote($usrID);
-      $stmt = $conn->prepare($sql);
-      $stmt->execute();
-      $result = $stmt->fetch();
-      echo $result['NumberOfPosts'];
-    }
-    catch(PDOException $e) {
-      error_log($e->getMessage(), 0);
-    }
-    $conn = null;
-  }
   public function searchForUser($username) {
     try {
       $conn = $this->connect();
       $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-      $sql = "SELECT Username FROM Users WHERE Username = " . $conn->quote($username);
+      $sql = "SELECT Username
+              FROM Users
+              WHERE Username = " . $conn->quote($username);
       $stmt = $conn->prepare($sql);
       $stmt->execute();
       $result = $stmt->fetch();

@@ -76,7 +76,7 @@
       <table>
         <tr>
           <td>registered</td>
-          <td><?php echo $registered->format('F d, Y H:i') ?></td>
+          <td><?php echo $registered->format('F d, Y') ?></td>
         </tr>
         <tr class="trlink" id="mySubjects">
           <td><?php echo $whose ?>subjects</td>

@@ -123,6 +123,8 @@ body {
   max-width: 70em;
   margin: auto;
   padding: 1em;
+  position: relative;
+  z-index: 1;
   border-radius: 1em;
   border: 0.1em solid white;
   box-shadow: 0 0 5px 2px #9D9A93, inset 0 3px 18px rgba(100, 100, 100, .25);
@@ -133,6 +135,8 @@ body {
   margin-bottom: 0.25em;
   background-color: #ccccff;
   color: #3333ff;
+  position: relative;
+  z-index: 2;
 }
 #login-form {
   display: none;
@@ -174,7 +178,7 @@ body {
 
   top: -14px;
   right: 15px;
-  z-index: 3;
+  z-index: 6;
 }
 .arrow-up-inner {
   width: 0;
@@ -194,7 +198,7 @@ body {
   box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.2);
   background-color: #fff;
   border-radius: 0.5em;
-  z-index: 2;
+  z-index: 5;
 }
 .dropdown-content:hover span {
   text-decoration: underline;
@@ -220,7 +224,7 @@ body {
 }
 #new-something-box {
   margin: auto;
-  width: 70em;
+  width: 80%;
   height: 20em;
   background-color: white;
   position: absolute;
@@ -229,7 +233,7 @@ body {
   transform: translate(-50%, -50%);
 }
 #close-button {
-  width: 70em;
+  width: 100%;
   height: auto;
   position: absolute;
   left: 50%;
@@ -246,11 +250,12 @@ body {
   background: url(/icons/close.png) 0 0;
 }
 #newsomething-form {
-  margin:  1em auto auto auto;;
-  width: 97%;
+  margin:  1em auto auto auto;
+  width: 95%;
   height: 80%;
 }
 #message {
+  border: 1px solid #000;
   display: block;
   margin: auto;
   width: 99%;
@@ -258,6 +263,7 @@ body {
   resize: none;
 }
 textarea[name=title] {
+  border: 1px solid #000;
   display: block;
   margin: auto;
   width: 99%;
@@ -266,6 +272,7 @@ textarea[name=title] {
   resize: none;
 }
 textarea[name=content] {
+  border: 1px solid #000;
   display: block;
   margin: auto;
   width: 99%;
@@ -287,7 +294,7 @@ input[name=send-button] {
   background-color: #cbf5da;
 }
 .register-form {
-  width: 30em;
+  max-width: 30em;
   margin: auto;
 }
 .register-form > div {
@@ -341,4 +348,19 @@ input[name=send-button] {
   text-align: center;
   color: #f00;
   display: none;
+}
+@media screen and (max-width: 800px) {
+  .rightcolumn {
+    display: none;
+  }
+  #login-form input {
+    display: block;
+    margin: auto;
+    margin-bottom: 0.3em;
+    padding: 0.5em;
+  }
+  #login-form input[type=submit],
+  #login-form input[type=button] {
+    width: 30%;
+  }
 }

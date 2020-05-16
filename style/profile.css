@@ -127,6 +127,8 @@ form[name=newpicture] button:disabled {
   padding: 1em 1em 1em 1em;
   margin-bottom: 0.25em;
   background-color: #acfac1;
+  position: relative;
+  z-index: 1;
 }
 .profilepicture {
   display: block;
@@ -145,4 +147,18 @@ form[name=newpicture] button:disabled {
 .profile__column2 h3 {
   display: inline-block;
   margin-top: 0;
+}
+@media screen and (max-width: 800px) {
+  .profile {
+    display: block;
+  }
+  .profile__column2 h3 {
+    display: block;
+    text-align: center;
+    margin-top: 1em;
+  }
+  .profile__column2__last-seen {
+    float: none;
+    text-align: center;
+  }
 }

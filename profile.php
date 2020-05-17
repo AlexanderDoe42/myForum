@@ -89,7 +89,7 @@
       </table>
     </div>
   </div>
-  <div id="users-posts"><div>
+  <div id="users-posts"></div>
 </div>
 <div id="new-something-body">
   <div id="new-something-box">

@@ -161,4 +161,7 @@ form[name=newpicture] button:disabled {
     float: none;
     text-align: center;
   }
+  .profilepicture {
+    max-height: none;
+  }
 }

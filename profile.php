@@ -91,6 +91,8 @@
   </div>
   <div id="users-posts"></div>
 </div>
+<footer></footer>
+
 <div id="new-something-body">
   <div id="new-something-box">
     <div id="close-button" class="cursor-pointer" onclick="closeBox()">
@@ -111,14 +113,6 @@
   </div>
 </div>
 
-<script>
-  $("#forumhead").load("html/forumhead.html");
-  $("#user-info").load("html/user-info.html", function(responseTxt, statusTxt, xhr){
-    if(statusTxt == "success") {
-      userCondition();
-    }
-  });
-</script>
 <script src="js/main.js"></script>
 <script src="js/profile.js"></script>
 

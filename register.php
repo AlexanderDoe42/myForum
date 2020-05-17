@@ -101,6 +101,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
   </div>
 </div>
+<footer></footer>
+
 <div id="new-something-body">
   <div id="new-something-box">
     <div id="close-button" class="cursor-pointer" onclick="closeBox()">
@@ -155,9 +157,6 @@ service.<br><br>
   </div>
 </div>
 
-<script>
-  $("#forumhead").load("/html/forumhead.html");
-</script>
 <script src="/js/main.js"></script>
 
 </body>

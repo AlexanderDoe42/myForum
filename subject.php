@@ -29,6 +29,8 @@
   <div id="posts"></div>
   <button onclick="replyButtonClickEvent('post')">Reply</button>
 </div>
+<footer></footer>
+
 <div id="new-something-body">
   <div id="new-something-box">
     <div id="close-button" class="cursor-pointer" onclick="closeBox('post')">
@@ -41,20 +43,6 @@
   </div>
 </div>
 
-<script>
-  var curURL = window.location.href;
-  var pos = curURL.indexOf("?id=");
-  var subjectID = curURL.slice(pos);
-  $("#newsomething-form").attr("action", "newpost.php" + subjectID);
-
-  $("#forumhead").load("/html/forumhead.html");
-  $("#user-info").load("/html/user-info.html", function(responseTxt, statusTxt, xhr){
-    if(statusTxt == "success") {
-      userCondition();
-      $("#login-form").attr("action", "login.php" + subjectID);
-    }
-  });
-</script>
 <script src="/js/main.js"></script>
 <script>
   var query = "SubjectID=";

@@ -349,6 +349,20 @@ input[name=send-button] {
   color: #f00;
   display: none;
 }
+footer {
+  max-width: 70em;
+  margin: 0.5em auto auto auto;
+  color: #f0ebdf;
+}
+.copyright {
+  display: inline-block;
+  font-size: 0.9em;
+}
+.author {
+  display: inline-block;
+  float: right;
+  font-size: 0.9em;
+}
 @media screen and (max-width: 800px) {
   .rightcolumn {
     display: none;
@@ -362,5 +376,15 @@ input[name=send-button] {
   #login-form input[type=submit],
   #login-form input[type=button] {
     width: 30%;
+  }
+  .copyright {
+    display: block;
+    text-align: center;
+    margin-bottom: 0.5em;
+  }
+  .author {
+    display: block;
+    float: none;
+    text-align: center;
   }
 }

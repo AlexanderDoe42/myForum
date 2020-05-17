@@ -1,3 +1,20 @@
+var curURL = window.location.href;
+var pos = curURL.indexOf("subject.php?id=");
+var subjectID = "";
+if (pos != -1) {
+  pos = curURL.indexOf("?id=");
+  subjectID = curURL.slice(pos);
+  $("#newsomething-form").attr("action", "newpost.php" + subjectID);
+}
+$("#forumhead").load("/html/forumhead.html");
+$("#user-info").load("/html/user-info.html", function(responseTxt, statusTxt, xhr){
+  if(statusTxt == "success") {
+    userCondition();
+    $("#login-form").attr("action", "login.php" + subjectID);
+  }
+});
+$("footer").load("html/footer.html");
+
 function setCookie(cname, cvalue, exdays) {
   var d = new Date();
   d.setTime(d.getTime() + (exdays*24*60*60*1000));

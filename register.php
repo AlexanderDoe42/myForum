@@ -8,8 +8,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Forum</title>
 <link rel="icon" href="icons/favicon.ico">
-<link rel="stylesheet" type="text/css" href="/font/flaticon.css">
-<link rel="stylesheet" type="text/css" href="/style/main.css">
+<link rel="stylesheet" type="text/css" href="font/flaticon.css">
+<link rel="stylesheet" type="text/css" href="style/main.css">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
@@ -68,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <div id="registration">
     <div id="reg-success">
       <h3>You have been registered successfully!</h3>
-      go to the <a href="/">main page</a>
+      go to the <a href="/forum">main page</a>
     </div>
     <form class="register-form" name="register" onsubmit="return checkRegForm()" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
       <h1>Registration</h1>
@@ -157,7 +157,7 @@ service.<br><br>
   </div>
 </div>
 
-<script src="/js/main.js"></script>
+<script src="js/main.js"></script>
 
 </body>
 </html>

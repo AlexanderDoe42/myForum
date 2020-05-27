@@ -95,7 +95,7 @@ class MyDB extends Dbh {
                 </div>
               </div>
               <button class="quote-button" onclick="replyButtonClickEvent(' . $post['PostID'] . ')">
-                <img src="/icons/double_quotation_mark.png">
+                <img src="icons/double_quotation_mark.png">
               </button>
               <div id="post_content' . $post['PostID'] . '" class="post_content">' . $post['PostContent'] . '</div>
             </div>
@@ -141,7 +141,7 @@ class MyDB extends Dbh {
                   <span class="datetime"> >> ' . $created->format('F d, Y H:i') . '</span>
                 </div>
               </div>
-              <button class="quote-button" onclick="replyButtonClickEvent(0)"><img src="/icons/double_quotation_mark.png"></button>
+              <button class="quote-button" onclick="replyButtonClickEvent(0)"><img src="icons/double_quotation_mark.png"></button>
               <div id="post_content0" class="post_content">' . $subject['Content'] . '</div>
             </div>
             <div class="rightcolumn">
@@ -293,9 +293,9 @@ class MyDB extends Dbh {
     $stmt->execute();
     $result = $stmt->fetch();
     if (!$result) {
-      setcookie("usrID", "wrong", time() + (86400 * 365), "/");
+      setcookie("usrID", "wrong", time() + (86400 * 365), "/forum");
     } else {
-      setcookie("usrID", $result['UserID'], time() + (86400 * 365), "/");
+      setcookie("usrID", $result['UserID'], time() + (86400 * 365), "/forum");
     }
   }
   public function signup($username, $password) {

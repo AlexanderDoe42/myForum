@@ -6,8 +6,8 @@ if (pos != -1) {
   subjectID = curURL.slice(pos);
   $("#newsomething-form").attr("action", "newpost.php" + subjectID);
 }
-$("#forumhead").load("/html/forumhead.html");
-$("#user-info").load("/html/user-info.html", function(responseTxt, statusTxt, xhr){
+$("#forumhead").load("html/forumhead.html");
+$("#user-info").load("html/user-info.html", function(responseTxt, statusTxt, xhr){
   if(statusTxt == "success") {
     userCondition();
     $("#login-form").attr("action", "login.php" + subjectID);
@@ -19,7 +19,7 @@ function setCookie(cname, cvalue, exdays) {
   var d = new Date();
   d.setTime(d.getTime() + (exdays*24*60*60*1000));
   var expires = "expires="+ d.toUTCString();
-  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/forum";
 }
 
 function getCookie(cname) {
@@ -43,7 +43,7 @@ setCookie("tz", tzOffset * 60, 100);
 
 function stylePosts() {
   const post_content = document.getElementsByClassName("post_content");
-  var htmlForQuoteAuthor = '<div class="quote_author"><img src="/icons/double_quotation_mark.png">';
+  var htmlForQuoteAuthor = '<div class="quote_author"><img src="icons/double_quotation_mark.png">';
   var len = post_content.length;
   for (i = 0; i < len; i++) {
     var bg_color = "bg4";
@@ -167,7 +167,7 @@ function printUsername() {
       }
     }
   }
-  xmlhttp.open("GET", "/getusername.php", true);
+  xmlhttp.open("GET", "getusername.php", true);
   xmlhttp.send();
 }
 function regSuccess() {
@@ -193,7 +193,7 @@ function showHint(str) {
       }
     }
   }
-  xmlhttp.open("GET", "/searchforuser.php?q=" + str, true);
+  xmlhttp.open("GET", "searchforuser.php?q=" + str, true);
   xmlhttp.send();
 }
 function checkRegForm() {

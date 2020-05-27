@@ -8,8 +8,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Forum</title>
 <link rel="icon" href="icons/favicon.ico">
-<link rel="stylesheet" type="text/css" href="/font/flaticon.css">
-<link rel="stylesheet" type="text/css" href="/style/main.css">
+<link rel="stylesheet" type="text/css" href="font/flaticon.css">
+<link rel="stylesheet" type="text/css" href="style/main.css">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
@@ -43,7 +43,7 @@
   </div>
 </div>
 
-<script src="/js/main.js"></script>
+<script src="js/main.js"></script>
 <script>
   var query = "SubjectID=";
   params = new URLSearchParams(location.search);

@@ -244,10 +244,10 @@ body {
   float: right;
   width: 50px;
   height: 50px;
-  background: url(/icons/close.png) -50px 0;
+  background: url(/forum/icons/close.png) -50px 0;
 }
 #close-button:hover div {
-  background: url(/icons/close.png) 0 0;
+  background: url(/forum/icons/close.png) 0 0;
 }
 #newsomething-form {
   margin:  1em auto auto auto;

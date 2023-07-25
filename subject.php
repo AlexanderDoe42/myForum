@@ -7,7 +7,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Forum</title>
-<link rel="icon" href="icons/favicon.ico">
+<link rel="icon" href="myIcons/favicon.ico">
 <link rel="stylesheet" type="text/css" href="font/flaticon.css">
 <link rel="stylesheet" type="text/css" href="style/main.css">
 
